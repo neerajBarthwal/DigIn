@@ -77,13 +77,23 @@ def get_restaurant_by_name(restaurant_name): # returant restaurant details as di
     con = sql.connect("digin.db")
     # Uncomment line below if you want output in dictionary format
 
-    con.row_factory = sql.Row
+    
     sqlQuery = "select * from restaurant where (name ='" + restaurant_name + "')"
     cur = con.cursor()
     cur.execute(sqlQuery)
     rows = cur.fetchone()
     con.close()
 
+    return rows
+
+def get_all_restaurant(): # returant restaurant details as dictionary
+    con = sql.connect("digin.db")
+    # Uncomment line below if you want output in dictionary format
+    sqlQuery = "select * from restaurant "
+    cur = con.cursor()
+    cur.execute(sqlQuery)
+    rows = cur.fetchall()
+    con.close()
     return rows
 
 def add_product_to_menu(restaurant_id,request):
@@ -167,3 +177,36 @@ def create_customer_orders(request): # C part of CRUD
     print "added user successfully"
 
     con.close()
+
+##cart code
+def add_to_cart(user_id,request):
+    con = sql.connect("digin.db")
+    t = (request.form['product_id'], user_id)
+    sqlQuery = "select user_id from cart where product_id = ? and user_id= ?"
+    cur = con.cursor()
+    cur.execute(sqlQuery, t)
+    row = cur.fetchone()
+
+    if not row:  #newly added to cart
+        cur.execute(
+            "INSERT INTO cart (user_id,product_id,quantity) VALUES (?,?,?)",
+            (
+                user_id, request.form['product_id'],
+                request.form['quantity']))
+        con.commit()
+        print("added product to menu successfully")
+    else:#update quantity
+        sqlQuery = "UPDATE cart SET quantity= ? WHERE user_id = ?, product_id=?", (
+        request.form['quantity'] , user_id, request.form['product_id'])
+
+    con.close()
+
+def view_cart(user_id,request):
+    con = sql.connect("digin.db")
+    con.row_factory = sql.Row
+    t = (user_id,)
+    sqlQuery = "select * from cart where user_id= ?"
+    cur = con.cursor()
+    cur.execute(sqlQuery, t)
+    rows = cur.fetchall()
+    return rows

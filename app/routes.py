@@ -9,8 +9,20 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/')
 def welcome():
-    return render_template('index.html')
+    rest = dbHandler.get_all_restaurant()
+    return render_template('index.html',restaurants=rest)
 
+@app.route('/order', methods=['GET', 'POST'])
+def order():
+    return render_template('order.html')
+
+@app.route('/restaurants', methods=['GET', 'POST'])
+def restaurants():
+    return render_template('restaurants.html')
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    return render_template('contact.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -98,6 +110,24 @@ def delete_product_from_menu():
         else:
             msg = "could not add product"
         return render_template('add_to_menu.html', message=msg)
+
+@app.route('/add_to_cart',methods=['POST'])
+def add_to_cart():
+    if 'username' in session:
+        if dbHandler.add_to_cart(session['user_id'],request):
+            msg = "product successfully added to cart"
+        else:
+            msg = "could not add product to cart"
+        return render_template('add_to_cart.html', message=msg)
+    else:
+        return render_template("login.html", message="")
+
+@app.route('/view_cart',methods=['POST'])
+def view_cart():
+    if 'username' in session:
+        rows=dbHandler.view_cart(session['user_id'],request)
+        #rows contains uid,pid,qnty
+        return render_template('view_cart.html', rows)
 
 
 if __name__ == "__main__":
