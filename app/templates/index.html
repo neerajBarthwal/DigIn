@@ -1,0 +1,24 @@
+<html>
+<title>DigIn</title>
+<body>
+	<h1>Welcome to DigIn - Order food online at cheapest price</h1>
+		
+		<h2>{{message}}</h2>
+	
+	
+	
+	<br>
+	<form action="/login" method="post">
+		<p class="contact"><label for="username">Username</label></p> 
+    	<input id="username" name="username" placeholder="username" required tabindex="1" type="text"> 
+    			 
+        <p class="contact"><label for="password">Password</label></p> 
+    	<input type="password" id="password" placeholder="Password" name="password" required> 
+    	<br><br>
+           
+        <input class="buttom" name="submit" id="submit" tabindex="5" value="Login!" type="submit">
+	</form>
+	<br><br>
+	<a href="{{ url_for('signup') }}">Click here to sign up</a>
+</body>
+</html>

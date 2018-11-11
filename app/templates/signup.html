@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register with DigIn! Never be hungry!</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="../static/css/demo.css" media="all" />
+</head>
+<body>
+<div class="container">
+			
+			<header>
+				<h1><span>DigIn</span> Registration Form</h1>
+            </header>       
+      <div  class="form">
+    		<form id="contactform" action="/signup" method="post"> 
+    			<p class="contact"><label for="name">Name</label></p> 
+    			<input id="name" name="name" placeholder="First and last name" required tabindex="1" type="text"> 
+    			 
+    			 <p class="contact"><label for="address">Address</label></p> 
+    			<input id="address" name="address" placeholder="Address" required tabindex="1" type="text"> 
+    			 
+    			<p class="contact"><label for="email">Email</label></p> 
+    			<input id="email" name="email" placeholder="example@domain.com" tabindex="1" required type="email">
+    			
+    			<p class="contact"><label for="phone">Phone</label></p> 
+    			<input id="phone" name="phone" placeholder="Phone Number(10 digits)" tabindex="1" required type="tel">  
+                
+                <p class="contact"><label for="username">Username</label></p> 
+    			<input id="username" name="username" placeholder="username" required tabindex="1" type="text"> 
+    			 
+                <p class="contact"><label for="password">Password</label></p> 
+    			<input type="password" id="password" placeholder="Password" name="password" required> 
+        
+             	<br><br>
+           
+            <input class="buttom" name="submit" id="submit" tabindex="5" value="Sign me up!" type="submit"> 	 
+   </form> 
+</div>      
+</div>
+
+</body>
+</html>
