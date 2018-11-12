@@ -24,6 +24,30 @@ def restaurants():
 def contact():
     return render_template('contact.html')
 
+@app.route('/orderslist', methods=['GET', 'POST'])
+def orderslist():
+    return render_template('orders-list.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if(request.method=='POST'):
+        if dbHandler.create_customer(request):
+            msg="Account successfully created"
+        else:
+            msg="<p style=\"color:red\">Could not create user user account</p>"
+        return render_template('register.html',message=msg)
+    return render_template('register.html')
+
+@app.route('/index', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html')
+
+@app.route('/checkout',methods=['GET','POST'])
+def checkout():
+    if 'username' in session:
+        return render_template('checkout.html')
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if(request.method=='POST'):
@@ -37,17 +61,19 @@ def signup():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if(request.method=='GET'):
-        if 'username' in session:
-            return render_template("index.html",message="Welcome "+session['username']+"!")
-    elif request.method=='POST':
+        return render_template("login.html")
+    elif(request.method=='POST'):
         if dbHandler.authenticate(request):
             session['username'] = request.form['username']
-            log_in = True
+            
             msg = "Welcome "+session['username']+"!"
+            rest = dbHandler.get_all_restaurant()
         else:
-            log_in = False
+            
             msg = "Incorrect Credentials."
-    return render_template("index.html",message=msg)
+            return render_template("login.html",message=msg)
+    return render_template("index.html",restaurants=rest,logged_in=True,message=msg)
+        
 
 
 @app.route('/restaurant/signup', methods=['GET', 'POST'])

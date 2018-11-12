@@ -1,6 +1,6 @@
 import sqlite3 as sql
 from passlib.hash import sha256_crypt
-
+import pandas as pd
 def create_customer(request):
     con = sql.connect("digin.db")
    

@@ -1,18 +1,12 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
 <!DOCTYPE html>
 <html>
 <head>
-<title>Food_Template Bootstrap Responsive Website Template | Register :: w3layouts</title>
-<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+<title>DigIn-Food at first sight</title>
+<link href="../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="js/jquery.min.js"></script>
+<script src="../static/js/jquery.min.js"></script>
 <!-- Custom Theme files -->
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../static/css/style.css" rel="stylesheet" type="text/css" media="all" />
 <!-- Custom Theme files -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -43,19 +37,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<div class="container">
 			<div class="top-header">
 				<div class="logo">
-					<a href="index.html"><img src="images/logo.png" class="img-responsive" alt="" /></a>
+					<a href="index.html"><img src="../static/images/logo.png" class="img-responsive" alt="" /></a>
 				</div>
 				<div class="queries">
 					<p>Questions? Call us Toll-free!<span>1800-0000-7777 </span><label>(11AM to 11PM)</label></p>
 				</div>
 				<div class="header-right">
-						<div class="cart box_1">
+						<!-- <div class="cart box_1">
 							<a href="checkout.html">
 								<h3> <span class="simpleCart_total"> $0.00 </span> (<span id="simpleCart_quantity" class="simpleCart_quantity"> 0 </span> items)<img src="images/bag.png" alt=""></h3>
 							</a>	
 							<p><a href="javascript:;" class="simpleCart_empty">Empty card</a></p>
 							<div class="clearfix"> </div>
-						</div>
+						</div> -->
 					</div>
 				<div class="clearfix"></div>
 			</div>
@@ -64,16 +58,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<div class="container">
 				<div class="top-menu">
 					<ul>
-						<li><a href="index.html">Home</a></li>|
-						<li><a href="restaurants.html">Popular Restaurants</a></li>|
-						<li><a href="order.html">Order</a></li>|
-						<li><a href="contact.html">contact</a></li>
+						<li><a href="{{ url_for('index') }}">Home</a></li>|
+						<li><a href="{{ url_for('restaurants') }}">Popular Restaurants</a></li>|
+						<li><a href="{{ url_for('order') }}">Order</a></li>|
+						<li><a href="{{ url_for('contact') }}">contact</a></li>
 						<div class="clearfix"></div>
 					</ul>
 				</div>
 				<div class="login-section">
 					<ul>
-						<li><a href="login.html">Login</a>  </li> |
+						<li><a href="{{ url_for('login') }}">Login</a>  </li> |
 						<li><a class="active" href="#">Register</a> </li> |
 						<li><a href="#">Help</a></li>
 						<div class="clearfix"></div>
@@ -89,45 +83,59 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<div class="main">
 	   <div class="container">
 		  <div class="register">
-		  	  <form> 
+		  	  <form action="/register" method="post"> 
 				 <div class="register-top-grid">
-					<h3>PERSONAL INFORMATION</h3>
+					<h3>PERSONAL INFORMATION</h3> <h3>{{message}}</h3>
 					 <div class="wow fadeInLeft" data-wow-delay="0.4s">
-						<span>First Name<label>*</label></span>
-						<input type="text"> 
+						<span>Full Name<label>*</label></span>
+						<input name="name" type="text" required> 
 					 </div>
 					 <div class="wow fadeInRight" data-wow-delay="0.4s">
-						<span>Last Name<label>*</label></span>
-						<input type="text"> 
+						<span>Address<label>*</label></span>
+						<input name="address" type="text" required> 
 					 </div>
 					 <div class="wow fadeInRight" data-wow-delay="0.4s">
 						 <span>Email Address<label>*</label></span>
-						 <input type="text"> 
+						 <input name="email" type="text" required> 
 					 </div>
+					 <div class="wow fadeInRight" data-wow-delay="0.4s">
+						 <span>Mobile Number<label>*</label></span>
+						 <input name="phone" type="text" required> 
+					 </div>
+					 <div class="wow fadeInRight" data-wow-delay="0.4s">
+						 <span>Username<label>*</label></span>
+						 <input name="username" type="text" required> 
+					 </div>
+					 
 					 <div class="clearfix"> </div>
 					   <a class="news-letter" href="#">
-						 <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i>Sign Up for Newsletter</label>
-					   </a>
+						 <!-- <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i>Sign Up for Newsletter</label> -->
+					   </a> 
 					 </div>
 				     <div class="register-bottom-grid">
 						    <h3>LOGIN INFORMATION</h3>
 							 <div class="wow fadeInLeft" data-wow-delay="0.4s">
 								<span>Password<label>*</label></span>
-								<input type="password">
+								<input name = "password" type="password">
 							 </div>
 							 <div class="wow fadeInRight" data-wow-delay="0.4s">
 								<span>Confirm Password<label>*</label></span>
 								<input type="password">
 							 </div>
 					 </div>
+					 <div class="clearfix"> </div>
+						<!-- <div class="register-but">
+ -->							   <input type="submit" value="submit">
+							   <div class="clearfix"> </div>
+						</div>
 				</form>
-				<div class="clearfix"> </div>
+				<!-- <div class="clearfix"> </div>
 				<div class="register-but">
 				   <form>
 					   <input type="submit" value="submit">
 					   <div class="clearfix"> </div>
 				   </form>
-				</div>
+				</div> -->
 		   </div>
 	     </div>
 	    </div>
@@ -143,7 +151,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<li>
 							<div class="offer">
 								<div class="offer-image">	
-									<img src="images/p1.jpg" class="img-responsive" alt=""/>
+									<img src="../static/images/p1.jpg" class="img-responsive" alt=""/>
 								</div>
 								<div class="offer-text">
 									<h4>Olister Combo pack lorem</h4>
@@ -157,7 +165,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<li>
 							<div class="offer">
 								<div class="offer-image">	
-									<img src="images/p2.jpg" class="img-responsive" alt=""/>
+									<img src="../static/images/p2.jpg" class="img-responsive" alt=""/>
 								</div>
 								<div class="offer-text">
 									<h4>Chicken Jumbo pack lorem</h4>
@@ -171,7 +179,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<li>
 							<div class="offer">
 								<div class="offer-image">	
-									<img src="images/p1.jpg" class="img-responsive" alt=""/>
+									<img src="../static/images/p1.jpg" class="img-responsive" alt=""/>
 								</div>
 								<div class="offer-text">
 									<h4>Crab Combo pack lorem</h4>
@@ -186,7 +194,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<li>
 							<div class="offer">
 								<div class="offer-image">	
-									<img src="images/p2.jpg" class="img-responsive" alt=""/>
+									<img src="../static/images/p2.jpg" class="img-responsive" alt=""/>
 								</div>
 								<div class="offer-text">
 									<h4>Chicken Jumbo pack lorem</h4>
@@ -227,7 +235,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						
 					});
 				    </script>
-				    <script type="text/javascript" src="js/jquery.flexisel.js"></script>
+				    <script type="text/javascript" src="../static/js/jquery.flexisel.js"></script>
 				</div>
 			</div>
 		</div>
@@ -306,11 +314,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</div>
 	<!-- content-section-ends -->
 	<!-- footer-section-starts -->
-	<div class="footer"> 
+	<!-- <div class="footer"> 
 		<div class="container">
 			<p class="wow fadeInLeft" data-wow-delay="0.4s">&copy; 2014  All rights  Reserved | Template by &nbsp;<a href="http://w3layouts.com" target="target_blank">W3Layouts</a></p>
 		</div>
-	</div>
+	</div> -->
 	<!-- footer-section-ends -->
 	  <script type="text/javascript">
 						$(document).ready(function() {
