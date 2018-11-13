@@ -81,36 +81,42 @@
 	<!-- content-section-starts -->
 	<div class="content">
 	<div class="main">
-	   <div class="container">
-		  <div class="register">
-		  	  <form action="/register" method="post"> 
+
+		<div class="account_grid">
+				   <!--restaurant registration section-->
+			   <div class="col-md-6 login-right wow fadeInRight" data-wow-delay="0.4s">
+			  	       <form action="/restaurant_register" method="post">
 				 <div class="register-top-grid">
-					<h3>PERSONAL INFORMATION</h3> <h3>{{message}}</h3>
+					<h3>RESTAURANT REGISTRATION</h3> <h3>{{message_restaurant}}</h3>
 					 <div class="wow fadeInLeft" data-wow-delay="0.4s">
-						<span>Full Name<label>*</label></span>
-						<input name="name" type="text" required> 
+						<span>Restaurant Name<label>*</label></span>
+						<input name="name" type="text" required>
 					 </div>
 					 <div class="wow fadeInRight" data-wow-delay="0.4s">
 						<span>Address<label>*</label></span>
-						<input name="address" type="text" required> 
+						<input name="address" type="text" required>
 					 </div>
 					 <div class="wow fadeInRight" data-wow-delay="0.4s">
 						 <span>Email Address<label>*</label></span>
-						 <input name="email" type="text" required> 
+						 <input name="email" type="text" required>
 					 </div>
 					 <div class="wow fadeInRight" data-wow-delay="0.4s">
 						 <span>Mobile Number<label>*</label></span>
-						 <input name="phone" type="text" required> 
+						 <input name="phone" type="text" required>
+					 </div>
+					 <div class="wow fadeInRight" data-wow-delay="0.4s">
+						 <span>Tagline<label>*</label></span>
+						 <input name="description" type="text" required>
 					 </div>
 					 <div class="wow fadeInRight" data-wow-delay="0.4s">
 						 <span>Username<label>*</label></span>
-						 <input name="username" type="text" required> 
+						 <input name="username" type="text" required>
 					 </div>
-					 
+
 					 <div class="clearfix"> </div>
 					   <a class="news-letter" href="#">
 						 <!-- <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i>Sign Up for Newsletter</label> -->
-					   </a> 
+					   </a>
 					 </div>
 				     <div class="register-bottom-grid">
 						    <h3>LOGIN INFORMATION</h3>
@@ -127,16 +133,66 @@
 						<!-- <div class="register-but">
  -->							   <input type="submit" value="submit">
 							   <div class="clearfix"> </div>
-						</div>
-				</form>
-				<!-- <div class="clearfix"> </div>
-				<div class="register-but">
-				   <form>
-					   <input type="submit" value="submit">
-					   <div class="clearfix"> </div>
-				   </form>
-				</div> -->
-		   </div>
+			     </form>
+			   </div>
+
+
+
+				   <!--customer registration section-->
+			   <div class="col-md-6 login-right wow fadeInRight" data-wow-delay="0.4s">
+			  	       <form action="/register" method="post">
+				 <div class="register-top-grid">
+					<h3>CUSTOMER REGISTRATION</h3> <h3>{{message_customer}}</h3>
+					 <div class="wow fadeInLeft" data-wow-delay="0.4s">
+						<span>Full Name<label>*</label></span>
+						<input name="name" type="text" required>
+					 </div>
+					 <div class="wow fadeInRight" data-wow-delay="0.4s">
+						<span>Address<label>*</label></span>
+						<input name="address" type="text" required>
+					 </div>
+					 <div class="wow fadeInRight" data-wow-delay="0.4s">
+						 <span>Email Address<label>*</label></span>
+						 <input name="email" type="text" required>
+					 </div>
+					 <div class="wow fadeInRight" data-wow-delay="0.4s">
+						 <span>Mobile Number<label>*</label></span>
+						 <input name="phone" type="text" required>
+					 </div>
+					 <div class="wow fadeInRight" data-wow-delay="0.4s">
+						 <span>Username<label>*</label></span>
+						 <input name="username" type="text" required>
+					 </div>
+
+					 <div class="clearfix"> </div>
+					   <a class="news-letter" href="#">
+						 <!-- <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i>Sign Up for Newsletter</label> -->
+					   </a>
+					 </div>
+				     <div class="register-bottom-grid">
+						    <h3>LOGIN INFORMATION</h3>
+							 <div class="wow fadeInLeft" data-wow-delay="0.4s">
+								<span>Password<label>*</label></span>
+								<input name = "password" type="password">
+							 </div>
+							 <div class="wow fadeInRight" data-wow-delay="0.4s">
+								<span>Confirm Password<label>*</label></span>
+								<input type="password">
+							 </div>
+					 </div>
+					 <div class="clearfix"> </div>
+						<!-- <div class="register-but">
+ -->							   <input type="submit" value="submit">
+							   <div class="clearfix"> </div>
+			     </form>
+			   </div>
+			   <div class="clearfix"> </div>
+			 </div>
+
+
+
+
+
 	     </div>
 	    </div>
 <div class="special-offers-section">

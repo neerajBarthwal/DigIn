@@ -1,8 +1,10 @@
 from flask import Flask
 from flask import request
+from flask import url_for
 from flask.templating import render_template
 import models as dbHandler
 from flask import session
+from flask import redirect
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -18,7 +20,8 @@ def order():
 
 @app.route('/restaurants', methods=['GET', 'POST'])
 def restaurants():
-    return render_template('restaurants.html')
+    rest_list = dbHandler.get_all_restaurant()
+    return render_template('restaurants.html',restaurants=rest_list)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -28,14 +31,20 @@ def contact():
 def orderslist():
     return render_template('orders-list.html')
 
+@app.route('/menu', methods=['GET', 'POST'])
+def menu():
+    restaurant_id = request.args.get('restaurant_id')
+    menu = dbHandler.get_menu(restaurant_id)
+    return render_template('menu.html',menu=menu)
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if(request.method=='POST'):
         if dbHandler.create_customer(request):
-            msg="Account successfully created"
+            msg="<p style=\"color:red\">Account successfully created</p>"
         else:
             msg="<p style=\"color:red\">Could not create user user account</p>"
-        return render_template('register.html',message=msg)
+        return render_template('register.html',message_customer=msg)
     return render_template('register.html')
 
 @app.route('/index', methods=['GET', 'POST'])
@@ -61,11 +70,19 @@ def signup():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if(request.method=='GET'):
-        return render_template("login.html")
+        if 'username' in session:
+            msg = "Welcome " + session['username'] + "!"
+            rest = dbHandler.get_all_restaurant()
+            render_template("index.html", restaurants=rest, logged_in=True, message=msg)
+        else:
+            return render_template("login.html")
+
     elif(request.method=='POST'):
         if dbHandler.authenticate(request):
             session['username'] = request.form['username']
-            
+            row = dbHandler.get_customer_from_username(request.form['username'])
+
+            session['id'] = row[0]
             msg = "Welcome "+session['username']+"!"
             rest = dbHandler.get_all_restaurant()
         else:
@@ -76,84 +93,129 @@ def login():
         
 
 
-@app.route('/restaurant/signup', methods=['GET', 'POST'])
-def signup_restaurant():
+@app.route('/restaurant_register', methods=['GET', 'POST'])
+def restaurant_register():
     if(request.method=='POST'):
-        if dbHandler.create_customer(request):
-            msg="restaurant successfully added"
+        if dbHandler.create_restaurant(request):
+            msg="<p style=\"color:red\">restaurant successfully added</p>"
         else:
-            msg="could not add restaurant"
-        return render_template('result.html', message=msg)
-    return render_template('restaurant_signup.html')
+            msg="<p style=\"color:red\">could not add restaurant</p>"
+        return render_template('register.html', message_restaurant=msg)
+    return render_template('register.html')
 
 
-@app.route('/restaurant/login', methods=['GET', 'POST'])
-def login_restaurant():
+@app.route('/restaurant_login', methods=['GET', 'POST'])
+def restaurant_login():
     if(request.method=='GET'):
-        if 'restaurant_name' in session:
-            return render_template("restaurant_main.html",message="Welcome "+session['restaurant_name']+"!")
+        if 'username' in session:
+            return render_template("restaurant_main.html",logged_in=True,message="Welcome "+session['username']+"!")
+
         else:
             return render_template("restaurant_login.html",message="")
     elif request.method=='POST':
-        if dbHandler.authenticate(request):
-            session['restaurant_name'] = request.form['restaurant_name']
-            row=dbHandler.get_restaurant_by_name(request.form['restaurant_name'])
-            session['restaurant_id'] = row['id']
+        if dbHandler.restaurant_authenticate(request):
+            session['username'] = request.form['username']
+            row = dbHandler.get_restaurant_id_by_username(request.form['username'])
+            #row=dbHandler.get_restaurant_by_name(request.form['name'])
+            session['id'] = row[0]
 
-            log_in = True
-            msg = "Welcome "+session['restaurant_name']+"!"
+
+            msg = "Welcome "+session['username']+"!"
         else:
-            log_in = False
+
             msg = "Incorrect Credentials."
             return render_template("restaurant_login.html",message="Invalid credentials")
-    return render_template("restaurant_main.html",message=msg)
+    return render_template("restaurant_main.html",logged_in=True,message=msg)
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it is there
+    session.pop('username', None)
+    session.pop('id',None)
+    return render_template('index.html')
 
 
-@app.route('/restaurant/add_to_menu', methods=['GET', 'POST'])
+
+@app.route('/add_product_to_menu', methods=['GET', 'POST'])
 def add_product_to_menu():
     if (request.method == 'GET'):
-        if 'restaurant_name' in session:
-            return render_template("add_to_menu.html", message="Welcome " + session['restaurant_name'] + "!")
+        if 'username' in session:
+            return render_template("add_to_menu.html", message="Welcome " + session['username'] + "!")
         else:
             return render_template("restaurant_login.html",message="")
     elif request.method == 'POST':
-        if dbHandler.add_product_to_menu(session['restaurant_id'],request):
+        if dbHandler.add_product_to_menu(session['id'],request):
             msg = "product successfully added"
         else:
             msg = "could not add product"
         return render_template('add_to_menu.html', message=msg)
 
-@app.route('/restaurant/add_to_menu', methods=['GET', 'POST'])
+@app.route('/delete_product_from_menu', methods=['GET', 'POST'])
 def delete_product_from_menu():
     if (request.method == 'GET'):
         if 'restaurant_name' in session:
-            return render_template("add_to_menu.html", message="Welcome " + session['restaurant_name'] + "!")
+            return render_template("delete_from_menu.html", message="Welcome " + session['restaurant_name'] + "!")
         else:
-            return render_template("restaurant_login.html",message="")
+            return render_template("login.html",message="")
     elif request.method == 'POST':
-        if dbHandler.add_product_to_menu(session['restaurant_id'],request):
+        if dbHandler.add_product_to_menu(session['id'],request):
             msg = "product successfully added"
         else:
             msg = "could not add product"
-        return render_template('add_to_menu.html', message=msg)
+        return render_template('delete_from_menu.html', message=msg)
 
 @app.route('/add_to_cart',methods=['POST'])
 def add_to_cart():
     if 'username' in session:
-        if dbHandler.add_to_cart(session['user_id'],request):
-            msg = "product successfully added to cart"
-        else:
-            msg = "could not add product to cart"
-        return render_template('add_to_cart.html', message=msg)
+        row = dbHandler.get_customer_from_username(session['username'])
+        dbHandler.add_to_cart(row[0],request)
+        restaurant_id = request.form['restaurant_id']
+        menu = dbHandler.get_menu(restaurant_id)
+        return redirect(url_for('menu', restaurant_id=restaurant_id))
     else:
-        return render_template("login.html", message="")
+        return render_template('login.html')
+     
 
-@app.route('/view_cart',methods=['POST'])
+@app.route('/view_cart',methods=['GET','POST'])
 def view_cart():
     if 'username' in session:
-        rows=dbHandler.view_cart(session['user_id'],request)
-        #rows contains uid,pid,qnty
-        return render_template('view_cart.html', rows)
+        customer = dbHandler.get_customer_from_username(session['username'])
+        rows=dbHandler.view_cart(customer[0])
+
+        return render_template('view_cart.html', items=rows)
+    else:
+        return render_template('login.html')
+
+@app.route('/update_cart',methods=['POST'])
+def update_cart():
+    if 'username' in session:
+        customer_id = request.form['customer_id']
+        dbHandler.add_to_cart(customer_id,request)
+        rows=dbHandler.view_cart(customer_id)
+        return render_template('view_cart.html', items=rows)
+    else:
+        return render_template('login.html')
+
+@app.route('/delete_from_cart',methods=['POST'])
+def delete_from_cart():
+    if 'username' in session:
+        customer_id = request.form['customer_id']
+        product_id = request.form['product_id']
+        dbHandler.delete_from_cart(customer_id, product_id)
+        rows=dbHandler.view_cart(customer_id)
+        return render_template('view_cart.html', items=rows)
+    else:
+        return render_template('login.html')
+
+@app.route('/vieworders', methods=['GET', 'POST'])
+def vieworders():
+    if 'username' in session:
+        customer_id = session['id']
+        ord = dbHandler.review_customer_orders(customer_id)
+        prod = dbHandler.get_order_products(customer_id)
+        return render_template('vieworders.html',orders=ord,products = prod,logged_in = True )
+    else:
+        return render_template('index.html')
 
 
 if __name__ == "__main__":

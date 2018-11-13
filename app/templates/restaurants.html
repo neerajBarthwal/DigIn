@@ -43,6 +43,8 @@
 					<p>Questions? Call us Toll-free!<span>1800-0000-7777 </span><label>(11AM to 11PM)</label></p>
 				</div>
 				<div class="header-right">
+						{%if logged_in %}
+						<h4>{{message}}<h4>
 						<div class="cart box_1">
 							<a href="{{ url_for('checkout') }}">
 								<h3> <span class="simpleCart_total"> $0.00 </span> (<span id="simpleCart_quantity" class="simpleCart_quantity"> 0 </span> items)<img src="../static/images/bag.png" alt=""></h3>
@@ -50,6 +52,7 @@
 							<p><a href="javascript:;" class="simpleCart_empty">Empty card</a></p>
 							<div class="clearfix"> </div>
 						</div>
+						{%endif%}
 					</div>
 				<div class="clearfix"></div>
 			</div>
@@ -84,120 +87,27 @@
 	<div class="Popular-Restaurants-content">
 		<div class="Popular-Restaurants-grids">
 			<div class="container">
+				{% for row in restaurants %}
 				<div class="Popular-Restaurants-grid wow fadeInRight" data-wow-delay="0.4s">
 					<div class="col-md-3 restaurent-logo">
-						<img src="../static/images/restaurent-logo1.jpg" class="img-responsive" alt="" />
+						<img src={{url_for('static', filename=row[6])}} class="img-responsive" alt="" />
 					</div>
 					<div class="col-md-2 restaurent-title">
 						<div class="logo-title">
-							<h4><a href="#">pizza hut</a></h4>
+							<h4><a href="#">{{row[1]}}</a></h4>
 						</div>
 						<div class="rating">
-							<span>ratings</span>
-							<a href="#"> <img src="../static/images/star1.png" class="img-responsive" alt="">(004)</a>
+							<span>rating</span>
+							<a href="#">&nbsp;{{row[5]}}</a>
 						</div>
 					</div>
 					<div class="col-md-7 buy">
-						<span>$45</span>
-						<a class="morebtn hvr-rectangle-in" href="{{ url_for('orderslist') }}">buy</a>
+						
+						<a class="morebtn hvr-rectangle-in" href="{{ url_for('menu', restaurant_id=row[0]) }}">Dig In</a>
 					</div>
 					<div class="clearfix"></div>
 				</div>
-				<div class="Popular-Restaurants-grid wow fadeInLeft" data-wow-delay="0.4s">
-					<div class="col-md-3 restaurent-logo">
-						<img src="../static/images/restaurent-logo2.jpg" class="img-responsive" alt="" />
-					</div>
-					<div class="col-md-2 restaurent-title">
-						<div class="logo-title logo-title-1">
-							<h4><a href="#">Subway</a></h4>
-						</div>
-						<div class="rating">
-							<span>ratings</span>
-							<a href="#"> <img src="../static/images/star2.png" class="img-responsive" alt="">(005)</a>
-						</div>
-					</div>
-					<div class="col-md-7 buy">
-						<span>$45</span>
-						<a class="morebtn hvr-rectangle-in" href="{{ url_for('orderslist') }}">buy</a>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-				<div class="Popular-Restaurants-grid wow fadeInRight" data-wow-delay="0.4s">
-					<div class="col-md-3 restaurent-logo">
-						<img src="../static/images/restaurent-logo3.jpg" class="img-responsive" alt="" />
-					</div>
-					<div class="col-md-2 restaurent-title">
-						<div class="logo-title logo-title-2">
-							<h4><a href="#">Barista</a></h4>
-						</div>
-						<div class="rating">
-							<span>ratings</span>
-							<a href="#"> <img src="../static/images/star1.png" class="img-responsive" alt="">(004)</a>
-						</div>
-					</div>
-					<div class="col-md-7 buy">
-						<span>$45</span>
-						<a class="morebtn hvr-rectangle-in" href="{{ url_for('orderslist') }}">buy</a>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-				<div class="Popular-Restaurants-grid wow fadeInLeft" data-wow-delay="0.4s">
-					<div class="col-md-3 restaurent-logo">
-						<img src="../static/images/restaurent-logo4.jpg" class="img-responsive" alt="" />
-					</div>
-					<div class="col-md-2 restaurent-title">
-						<div class="logo-title logo-title-3">
-							<h4><a href="#">papa johns</a></h4>
-						</div>
-						<div class="rating">
-							<span>ratings</span>
-							<a href="#"> <img src="../static/images/star2.png" class="img-responsive" alt="">(005)</a>
-						</div>
-					</div>
-					<div class="col-md-7 buy">
-						<span>$45</span>
-						<a class="morebtn hvr-rectangle-in" href="{{ url_for('orderslist') }}">buy</a>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-				<div class="Popular-Restaurants-grid wow fadeInRight" data-wow-delay="0.4s">
-					<div class="col-md-3 restaurent-logo">
-						<img src="../static/images/restaurent-logo5.jpg" class="img-responsive" alt="" />
-					</div>
-					<div class="col-md-2 restaurent-title">
-						<div class="logo-title logo-title-4">
-							<h4><a href="#">Domino's pizza</a></h4>
-						</div>
-						<div class="rating">
-							<span>ratings</span>
-							<a href="#"> <img src="../static/images/star1.png" class="img-responsive" alt="">(004)</a>
-						</div>
-					</div>
-					<div class="col-md-7 buy">
-						<span>$45</span>
-						<a class="morebtn hvr-rectangle-in" href="{{ url_for('orderslist') }}">buy</a>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-				<div class="Popular-Restaurants-grid wow fadeInLeft" data-wow-delay="0.4s">
-					<div class="col-md-3 restaurent-logo">
-						<img src="../static/images/restaurent-logo6.jpg" class="img-responsive" alt="" />
-					</div>
-					<div class="col-md-2 restaurent-title">
-						<div class="logo-title logo-title-5">
-							<h4><a href="#">kfc</a></h4>
-						</div>
-						<div class="rating">
-							<span>ratings</span>
-							<a href="#"> <img src="../static/images/star2.png" class="img-responsive" alt="">(005)</a>
-						</div>
-					</div>
-					<div class="col-md-7 buy">
-						<span>$45</span>
-						<a class="morebtn hvr-rectangle-in" href="{{ url_for('orderslist') }}">buy</a>
-					</div>
-					<div class="clearfix"></div>
-				</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>

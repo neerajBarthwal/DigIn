@@ -42,18 +42,7 @@
 				<div class="queries">
 					<p>Questions? Call us Toll-free!<span>1800-0000-7777 </span><label>(11AM to 11PM)</label></p>
 				</div>
-				<div class="header-right">
-						{%if logged_in %}
-						<h4>{{message}}<h4>
-						<div class="cart box_1">
-							<a href="checkout.html">
-								<h3> <span class="simpleCart_total"> Rs. 0.00 </span> (<span id="simpleCart_quantity" class="simpleCart_quantity"> 0 </span> items)<img src="../static/images/bag.png" alt=""></h3>
-							</a>	
-							<p><a href="javascript:;" class="simpleCart_empty">Empty card</a></p>
-							<div class="clearfix"> </div>
-							{%endif%}
-						</div>
-					</div>
+
 				<div class="clearfix"></div>
 			</div>
 		</div>
@@ -62,12 +51,11 @@
 				<div class="top-menu">
 					<ul>
 						<li class="active"><a href="#Home" class="scroll">Home</a></li>
-						<li><a href="{{ url_for('restaurants') }}">Popular Restaurants</a></li>
-						<li><a href="{{ url_for('order') }}">Order</a></li>
-						<li><a href="{{ url_for('contact') }}">contact</a></li>
-						{%if logged_in %}
-						<li><a href="{{ url_for('contact') }}">View Orders</a></li>
-						{%endif%}
+						<li><a href="{{ url_for('add_product_to_menu') }}">Add To Menu</a></li>
+						<li><a href="{{ url_for('order') }}">Delete From Menu</a></li>
+						<li><a href="{{ url_for('contact') }}">Modify Menu</a></li>
+
+						<li><a href="{{ url_for('contact') }}">View All Orders</a></li>
 						<div class="clearfix"></div>
 					</ul>
 				</div>
@@ -133,7 +121,7 @@
 	</div>
 	<!-- header-section-ends -->
 	<!-- content-section-starts -->
-	<div class="content">
+	<!--<div class="content">
 		<div class="ordering-section" id="Order">
 			<div class="container">
 				<div class="ordering-section-head text-center wow bounceInRight" data-wow-delay="0.4s">
@@ -187,10 +175,10 @@
 				 <div class="m_3"><span class="middle-dotted-line"> </span> </div>
 				   <div class="container">
 				   <ul id="flexiselDemo3">
-				   {% for row in restaurants %} 
+				   {% for row in restaurants %}
 				   <li>
 							<div class="offer">
-								<div class="offer-image">	
+								<div class="offer-image">
 									<img src={{url_for('static', filename=row[6])}} class="img-responsive" alt=""/>
 								</div>
 								<div class="offer-text">
@@ -205,33 +193,33 @@
 					</li>
 					{% endfor %}
 					 </ul>
-					 
+
 				 <script type="text/javascript">
 					$(window).load(function() {
-						
+
 						$("#flexiselDemo3").flexisel({
 							visibleItems: 3,
 							animationSpeed: 1000,
 							autoPlay: false,
-							autoPlaySpeed: 3000,    		
+							autoPlaySpeed: 3000,
 							pauseOnHover: true,
 							enableResponsiveBreakpoints: true,
-							responsiveBreakpoints: { 
-								portrait: { 
+							responsiveBreakpoints: {
+								portrait: {
 									changePoint:480,
 									visibleItems: 1
-								}, 
-								landscape: { 
+								},
+								landscape: {
 									changePoint:640,
 									visibleItems: 2
 								},
-								tablet: { 
+								tablet: {
 									changePoint:768,
 									visibleItems: 3
 								}
 							}
 						});
-						
+
 					});
 				    </script>
 				    <script type="text/javascript" src="../static/js/jquery.flexisel.js"></script>
@@ -449,7 +437,8 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>-->
+
 	<!-- content-section-ends -->
 	<!-- footer-section-starts -->
 	<!-- <div class="footer">
