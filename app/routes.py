@@ -111,7 +111,7 @@ def restaurant_login():
             return render_template("restaurant_main.html",logged_in=True,message="Welcome "+session['username']+"!")
 
         else:
-            return render_template("restaurant_login.html",message="")
+            return render_template("login.html",message="")
     elif request.method=='POST':
         if dbHandler.restaurant_authenticate(request):
             session['username'] = request.form['username']
@@ -124,8 +124,17 @@ def restaurant_login():
         else:
 
             msg = "Incorrect Credentials."
-            return render_template("restaurant_login.html",message="Invalid credentials")
+            return render_template("login.html",message="Invalid credentials")
     return render_template("restaurant_main.html",logged_in=True,message=msg)
+
+@app.route('/search_restaurant', methods=['GET', 'POST'])
+def search_restaurant():
+    if(request.method=='POST'):
+        rest = dbHandler.search_restaurant(request)
+        if not rest:
+            return render_template('restaurants.html',err_message="Oops!! No results match your query. Try again with a different name.")
+        return render_template('restaurants.html',restaurants=rest)
+
 
 @app.route('/logout')
 def logout():
@@ -168,8 +177,10 @@ def delete_product_from_menu():
 def add_to_cart():
     if 'username' in session:
         row = dbHandler.get_customer_from_username(session['username'])
-        dbHandler.add_to_cart(row[0],request)
         restaurant_id = request.form['restaurant_id']
+        status_code = dbHandler.add_to_cart(row[0],request)
+        if(status_code=="ERR:DIFFERENT_RESTAURANT_ID"):
+            return redirect(url_for('menu', restaurant_id=restaurant_id,err=True,err_message="Looks like you chose a different restaurant this time. Empty your cart and then try again!"))
         menu = dbHandler.get_menu(restaurant_id)
         return redirect(url_for('menu', restaurant_id=restaurant_id))
     else:
@@ -211,11 +222,19 @@ def delete_from_cart():
 def vieworders():
     if 'username' in session:
         customer_id = session['id']
-        ord = dbHandler.review_customer_orders(customer_id)
+        ordr = dbHandler.review_customer_orders(customer_id)
         prod = dbHandler.get_order_products(customer_id)
-        return render_template('vieworders.html',orders=ord,products = prod,logged_in = True )
+        return render_template('vieworders.html',orders=ordr,products = prod,logged_in = True )
     else:
         return render_template('index.html')
+
+@app.route('/placeorder/<total_cost>', methods=['GET'])
+def placeorder(total_cost):
+    if 'username' in session:
+        customer_id = session['id']
+        dbHandler.placeorder(customer_id,total_cost)
+        return render_template('place_order.html')
+        
 
 
 if __name__ == "__main__":

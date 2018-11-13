@@ -29,7 +29,7 @@
 				});
 			});
 		</script>		
-<script src="../static/js/simpleCart.min.js"> </script>
+
 </head>
 <body>
     <!-- header-section-starts -->
@@ -83,8 +83,10 @@
 
 <div class="cart-items">
 	<div class="container">
+			{% if request.args.get('err') %}
+			 	<h1>{{request.args.get('err_message')}}</h1>
+			 {% endif %}
 			 <h1>Menu</h1>
-			 {% set total = {'value': 0} %}
 			 {% for item in menu %}
 			 <div class="cart-header">
 				 <div class="cart-sec simpleCart_shelfItem">
@@ -95,7 +97,6 @@
 					   	
 						<h2>{{item[1]}}</h2><br/><p>{{item[2]}}</p>
 						<br><br>
-						{% if total.update({"value": item[3]|int + total.value|int }) %} {% endif %}
 						<form id="{{item[0]}}" action="/add_to_cart" method="post">
 						<ul class="qty">
 							<li><p style="font-size:20px">Cost: {{item[3]}}</p></li>
@@ -114,14 +115,16 @@
 				  </div>
 			 </div>
 			 {% endfor %}
-			 {{total.value}}	
+			 
+			 
+			 
 		 </div>
 		 </div>
 <!-- checkout -->
 	<div class="contact-section" id="contact">
 			<div class="container">
 				<div class="contact-section-grids">
-					<div class="col-md-3 contact-section-grid wow fadeInLeft" data-wow-delay="0.4s">
+					<div class="col-md-3 contact-section-grid wow fadeInLeft" data-wow-delay="0.4 s">
 						<h4>Site Links</h4>
 						<ul>
 							<li><i class="point"></i></li>

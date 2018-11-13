@@ -215,7 +215,7 @@ def update_product_in_menu(product_id, request):
     con = sql.connect("digin.db")
     con.row_factory = sql.Row
     sqlQuery = "UPDATE product SET name= ?,description= ?,price=?,type= ?,picture= ?,restaurant_id= ? WHERE id = ?",(request.form['name'], request.form['description'],request.form['price'], request.form['type'], request.form['picture'], request.form['restaurant_id'],product_id)
-    cur = con.cursor()
+    cur = con.cursor()  
     cur.execute(sqlQuery)
     row = cur.fetchone()
     return  row
@@ -233,8 +233,23 @@ def create_customer_orders(request): # C part of CRUD
 ##cart code
 def add_to_cart(customer_id,request):
     con = sql.connect("digin.db")
+    sqlQuery = "select restaurant_id from cart where customer_id= ?"
+    t=(customer_id,)
+    cur = con.cursor()
+    cur.execute(sqlQuery, t)
+    row = cur.fetchone()
+    
+    if row:
+        restaurant_id_from_customer = request.form['restaurant_id']
+        current_restaurant_id = row[0]
+        if(restaurant_id_from_customer!=str(current_restaurant_id)):
+            return "ERR:DIFFERENT_RESTAURANT_ID"
+        
+    
+    
+    
     t = (request.form['product_id'], customer_id)
-    sqlQuery = "select customer_id from cart where product_id = ? and customer_id= ?"
+    sqlQuery = "select customer_id, restaurant_id from cart where product_id = ? and customer_id= ?"
     cur = con.cursor()
     cur.execute(sqlQuery, t)
     row = cur.fetchone()
@@ -245,10 +260,10 @@ def add_to_cart(customer_id,request):
 
     if not row:  #newly added to cart
         cur.execute(
-            "INSERT INTO cart (customer_id,product_id,quantity,cost) VALUES (?,?,?,?)",
+            "INSERT INTO cart (customer_id,product_id,quantity,cost,restaurant_id) VALUES (?,?,?,?,?)",
             (
                 customer_id, request.form['product_id'],
-                request.form['quantity'],total_cost))
+                request.form['quantity'],total_cost,request.form['restaurant_id']))
         con.commit()
         print("added product to menu successfully")
     else:#update quantity
@@ -258,12 +273,13 @@ def add_to_cart(customer_id,request):
         cur.execute(sqlQuery, t)
         con.commit()
     con.close()
+    return "SUCCESS"
 
 def view_cart(customer_id):
     con = sql.connect("digin.db")
     con.row_factory = sql.Row
     t = (customer_id,)
-    sqlQuery ="SELECT cart.customer_id,cart.product_id,cart.quantity,cart.cost,product.name,product.picture,product.price FROM cart INNER JOIN product ON cart.product_id =product.id where cart.customer_id= ?"
+    sqlQuery ="SELECT cart.customer_id,cart.product_id,cart.quantity,cart.cost,product.name,product.picture,product.price,product.restaurant_id FROM cart INNER JOIN product ON cart.product_id =product.id where cart.customer_id= ?"
     cur = con.cursor()
     cur.execute(sqlQuery, t)
     rows = cur.fetchall()
@@ -280,16 +296,17 @@ def delete_from_cart(customer_id, product_id):
     
 def review_customer_orders(customer_id): # R part of CRUD
     conn = sql.connect("digin.db")
-    sqlQuery = "select * from 'order' where (customer_id ='" + customer_id + "')"
+    sqlQuery = "select * from 'order' where customer_id = ? "
+    t=(customer_id,)
     cur = conn.cursor()
-    cur.execute(sqlQuery)
+    cur.execute(sqlQuery,t)
     rows = cur.fetchall()
     conn.close()
     return rows
 
 def get_order_products(customer_id):
     conn = sql.connect("digin.db")
-    df_order = pd.read_sql_query( "select * from 'order' where (customer_id ='" + customer_id + "')", conn)
+    df_order = pd.read_sql_query( "select * from 'order' where (customer_id ='" + str(customer_id) + "')", conn)
     df_order_mapping = pd.read_sql_query("select * from prod_order_mapping", conn)
     all_orders = pd.merge(df_order, df_order_mapping, left_on=['id'], right_on=['order_id'], how='inner')
     df_product_mapping = pd.read_sql_query("select * from product", conn)
@@ -297,3 +314,49 @@ def get_order_products(customer_id):
     orders = pd.merge( all_orders, df_product_mapping, left_on=['product_id'], right_on=['prod_id'], how='inner')
     conn.close()
     return orders
+
+def placeorder(customer_id,total_cost):
+    conn = sql.connect("digin.db")
+    sqlQuery = "SELECT * from cart where customer_id = ?"
+    t=(customer_id,)
+    cur = conn.cursor()
+    cur.execute(sqlQuery,t)
+    rows = cur.fetchall()
+    
+    row = rows[0]
+    #total_cost = row[3]
+    restaurant_id=row[4]
+    cur.execute("INSERT INTO 'order' (restaurant_id,customer_id,status,cost) VALUES (?,?,?,?)",
+                (restaurant_id,customer_id,"WAITING",total_cost))
+    
+    conn.commit()
+    order_id = cur.lastrowid #it will return the most recent id of the row that the cursor instance inserted
+    
+    for row in rows:
+        product_id = row[1]
+        quantity = row[2]
+        cur.execute("INSERT INTO 'prod_order_mapping' (order_id,product_id,quantity) VALUES (?,?,?)",
+                    (order_id,product_id,quantity))
+        conn.commit()
+    
+    deleteCartQuery = "DELETE from cart where customer_id = ?"
+    t=(customer_id,)
+    cur = conn.cursor()
+    cur.execute(deleteCartQuery,t)
+    conn.commit()
+    
+    conn.close()
+
+def search_restaurant(request):
+    conn = sql.connect("digin.db")
+    t=('%'+request.form['restaurant_name']+'%',)
+    sqlQuery = "select * from restaurant where lower(name) LIKE lower(?)"
+    cur = conn.cursor()
+    cur.execute(sqlQuery,t)
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+    
+    
+    
+    

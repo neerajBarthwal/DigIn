@@ -30,6 +30,22 @@
 				});
 			});
 		</script>
+		
+		<style>
+	.button {
+		background-color: #4CAF50;
+		border: none;
+		color: white;
+		padding: 15px 32px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+	}
+	</style>
+		
 </head>
 <body>
     <!-- header-section-starts -->
@@ -37,7 +53,7 @@
 		<div class="container">
 			<div class="top-header">
 				<div class="logo">
-					<a href="index.html"><img src="static/images/logo.png" class="img-responsive" alt="" /></a>
+					<a href="index.html"><img src="static/images/logo1 .png" class="img-responsive" alt="" /></a>
 				</div>
 				<div class="queries">
 					<p>Questions? Call us Toll-free!<span>1800-0000-7777 </span><label>(11AM to 11PM)</label></p>
@@ -91,41 +107,23 @@
 							<h2> To Order Online</h2>
 						</div>
 					</div>
-					<!-- <div class="form-list wow fadeInRight" data-wow-delay="0.5s">
-						<form>
+					<center><div class="form-list wow fadeInRight" data-wow-delay="0.5s">
+						<form action="/search_restaurant" method="post">
 						  <ul class="navmain">
-							<li><span>Location Name</span>
-							 <input type="text" class="text" value="Secunderabad" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Secunderabad';}">
-							</li>
-							<li><span>Restaurant Name</span>
-							 <input type="text" class="text" value="Swagath Grand" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Swagath Grand';}">
-							</li>
-							<li><span>Cuisine Name</span>
-							 <input type="text" class="text" value="Chicken Biriyani" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Chicken Biriyani';}">
-						    </li>
+							<li><span>Search Restaurant</span>
+							 <input type="text" class="text" name="restaurant_name" value="Restaurant Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Restaurant Name';}">
+							 <br/>
+							 <input type="submit" class="button" value="Search">
+							<!-- </li>
+							<li>
+								<input type="submit" />
+							</li> -->
 						  </ul>
 						</form>
-						</div> -->
+						</div></center>
 					<!-- start search-->
-		 <!-- <div class="main-search">
-	        <form action="search.html">
-	           <input type="text" value="Search" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search';}" class="text"/>
-	            <input type="submit" value=""/>
-	        </form>
-	        <div class="close"><img src="../static/images/cross.png" /></div>
-	    </div>
-	    <div class="srch"><button></button></div>
-		<script type="text/javascript">
-	         $('.main-search').hide();
-	        $('button').click(function (){
-	            $('.main-search').show();
-	            $('.main-search text').focus();
-	        }
-	        );
-	        $('.close').click(function(){
-	            $('.main-search').hide();
-	        });
-	    </script> -->
+		
+	    
 					
 				</div>
 			</div>
