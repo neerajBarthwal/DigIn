@@ -81,6 +81,7 @@
                 <h4>Customer Name: {{customer_details[1]}}</h4>
                 <h4>Customer Address: {{customer_details[2]}}</h4>
                 <h4>Customer Phone No: {{customer_details[3]}}</h4>
+				<h4>Customer Review: {{order_review}}</h4>
             </div>
             <li class="item-lists"><h4>Food Items</h4>
 
@@ -98,10 +99,22 @@
 							<li><a class="morebtn hvr-rectangle-in" href="#" onclick='document.getElementById("confirm").submit();'>Confirm Order</a></li>
 						</ul>
                     </form>
+				       <br/>
+				     <form id="decline" action="/decline_order" method="post">
+						<ul class="qty">
+                            <input type="hidden" name="order_id" value={{order_product_details[0][0]}} />
+
+							<li><a class="morebtn hvr-rectangle-in" href="#" onclick='document.getElementById("decline").submit();'>Decline Order</a></li>
+						</ul>
+                    </form>
 
                     {%elif order_status=="CONFIRMED"%}
                           <ul class="qty">
                             <li><a class="morebtn hvr-rectangle-in" href="#" >Order Confirmed</a></li>
+                          </ul>
+				    {%elif order_status =="DECLINED"%}
+				          <ul class="qty">
+                            <li><a class="morebtn hvr-rectangle-in" href="#" >Order Declined</a></li>
                           </ul>
                     {% endif %}
 			</li>

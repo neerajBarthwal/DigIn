@@ -260,12 +260,14 @@ def vieworders():
     else:
         return render_template('index.html')
 
-@app.route('/placeorder/<total_cost>', methods=['GET'])
-def placeorder(total_cost):
+@app.route('/placeorder', methods=['GET','POST'])
+def placeorder():
     if 'username' in session:
         customer_id = session['id']
-        dbHandler.placeorder(customer_id,total_cost)
-        return render_template('place_order.html')
+        total_cost = request.form['total_cost']
+        description = request.form['order_description']
+        receipt_rows = dbHandler.placeorder(customer_id,total_cost,description)
+        return render_template('place_order.html',items=receipt_rows)
 
 
 @app.route('/view_orders_for_restaurant', methods=['GET','POST'])
@@ -283,11 +285,12 @@ def view_details_of_order():
     if 'username' in session:
         
         order_status = dbHandler.get_order_status(request.form['order_id'])
+        order_review = dbHandler.get_order_review(request.form['order_id'])
         order_product_details = dbHandler.get_order_product_details(request.form['order_id'])
         customer_details=dbHandler.get_customer_details(request.form['c_id'])
         #print(order_product_details)
         #print(customer_details[1])
-        return render_template('view_order_details_by_restaurant.html',order_status=order_status[0],customer_details=customer_details,order_product_details=order_product_details,logged_in = True )
+        return render_template('view_order_details_by_restaurant.html',order_status=order_status[0],order_review=order_review[0],customer_details=customer_details,order_product_details=order_product_details,logged_in = True )
     else:
         return render_template('index.html')
 
@@ -301,7 +304,32 @@ def confirm_order():
         return render_template('restaurant_view_orders.html', orders=ordr, logged_in=True)
     else:
         return render_template('index.html')
-    
+
+@app.route('/decline_order', methods=['GET','POST'])
+def decline_order():
+    if 'username' in session:
+        restaurant_id = session['id']
+        dbHandler.decline_order(restaurant_id,request.form['order_id'])
+        #print("order id",request.form['order_id'])
+        ordr = dbHandler.get_orders_for_restaurant(restaurant_id)
+        return render_template('restaurant_view_orders.html', orders=ordr, logged_in=True)
+    else:
+        return render_template('index.html')
+
+
+@app.route('/review_order', methods=['GET', 'POST'])
+def review_order():
+    if 'username' in session:
+        dbHandler.review_order(request.form['order_review'],request.form['order_id'])
+        # print("order id",request.form['order_id'])
+        customer_id = session['id']
+        ordr = dbHandler.review_customer_orders(customer_id)
+        prod = dbHandler.get_order_products(customer_id)
+        return render_template('vieworders.html', orders=ordr, products=prod, logged_in=True)
+    else:
+        return render_template('index.html')
+
+
 @app.route('/pending_orders', methods=['GET','POST'])
 def pending_orders():
     if 'username' in session:

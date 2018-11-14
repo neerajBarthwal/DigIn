@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Food_Template Bootstrap Responsive Website Template | Checkout :: w3layouts</title>
+<title>DigIn-Food at first sight</title>
 <link href="../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="../static/js/jquery.min.js"></script>
@@ -28,9 +28,7 @@
 					$('html,body').animate({scrollTop:$(this.hash).offset().top},1200);
 				});
 			});
-		</script>		
-
-
+		</script>
 <style>
 	.btn {
   background-color: #4CAF50;
@@ -48,6 +46,7 @@
   background-color: #45a049;
 }
 </style>
+
 </head>
 <body>
     <!-- header-section-starts -->
@@ -60,15 +59,6 @@
 				<div class="queries">
 					<p>Questions? Call us Toll-free!<span>1800-0000-7777 </span><label>(11AM to 11PM)</label></p>
 				</div>
-				<!-- <div class="header-right">
-						<div class="cart box_1">
-							<a href="{{ url_for('checkout') }}">
-								<h3><img src="../static/images/bag.png" alt=""></h3>
-							</a>	
-							<p><a href="javascript:;" class="simpleCart_empty">Empty card</a></p>
-							<div class="clearfix"> </div>
-						</div>
-					</div> -->
 				<div class="clearfix"></div>
 			</div>
 		</div>
@@ -131,6 +121,7 @@
 							<input type="hidden" name="product_id" value={{item[1]}} />
 							<input type="hidden" name="customer_id" value="{{item[0]}}" />
 							<input type="hidden" name="restaurant_id" value="{{item[7]}}" />
+							<input type="hidden" name="order_description" value="">
 						</form>
 							 <div class="delivery">
 							 <ul class="qty">
@@ -148,10 +139,17 @@
 					   {% if total.update({"value": item[3]|int + total.value|int }) %} {% endif %}	
 				  </div>
 				  {% endfor %}
+				   {% if not cart_empty %}
+				   <form id="place_order" action="/placeorder" method="post">
+				  <textarea name="order_description" style="border:solid 5px green;" placeholder="Provide a description for your order (optional)" cols="90" rows="5"></textarea>
+				  <input type="hidden" name="total_cost" value="{{total.value}}">
+				  </form>
 				  <div style="text-align:right; font-size: 20px;">
-				  {% if not cart_empty %}
-				  <a class="morebtn hvr-rectangle-in" href="#">Total: {{total.value}}</a><p><br></p>
-				  <a class="morebtn hvr-rectangle-in" href="{{ url_for('placeorder', total_cost=total.value) }}">Proceed to checkout</a>
+				   <a class="morebtn hvr-rectangle-in" href="#">Total: {{total.value}}</a><p><br></p>
+				  
+				  <!-- <a class="morebtn hvr-rectangle-in" href="{{ url_for('placeorder', total_cost=total.value) }}">Proceed to checkout</a> -->
+				  <a class="morebtn hvr-rectangle-in" href="#" onclick="document.getElementById('place_order').submit();">Proceed to checkout</a>
+				  </div>
 				  {% endif %}
 				  </div> 
 			 </div>
@@ -229,26 +227,5 @@
 				</div>
 			</div>
 		</div>
-	<!-- content-section-ends -->
-	<!-- footer-section-starts -->
-	
-	<!-- footer-section-ends -->
-	  <script type="text/javascript">
-						$(document).ready(function() {
-							/*
-							var defaults = {
-					  			containerID: 'toTop', // fading element id
-								containerHoverID: 'toTopHover', // fading element hover id
-								scrollSpeed: 1200,
-								easingType: 'linear' 
-					 		};
-							*/
-							
-							$().UItoTop({ easingType: 'easeOutQuart' });
-							
-						});
-					</script>
-				<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
-
 </body>
 </html>

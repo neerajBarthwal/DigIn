@@ -279,6 +279,7 @@ def view_cart(customer_id):
     cur = con.cursor()
     cur.execute(sqlQuery, t)
     rows = cur.fetchall()
+    con.close()
     return rows
 
 def delete_from_cart(customer_id, product_id):
@@ -312,7 +313,8 @@ def get_order_products(customer_id):
     return orders
 
 
-def placeorder(customer_id,total_cost):
+def placeorder(customer_id,total_cost,description):
+    receipt_rows = view_cart(customer_id)
     conn = sql.connect("digin.db")
     sqlQuery = "SELECT * from cart where customer_id = ?"
     t=(customer_id,)
@@ -323,8 +325,8 @@ def placeorder(customer_id,total_cost):
     row = rows[0]
     #total_cost = row[3]
     restaurant_id=row[4]
-    cur.execute("INSERT INTO 'order' (restaurant_id,customer_id,status,cost) VALUES (?,?,?,?)",
-                (restaurant_id,customer_id,"WAITING",total_cost))
+    cur.execute("INSERT INTO 'order' (restaurant_id,customer_id,status,cost,description) VALUES (?,?,?,?,?)",
+                (restaurant_id,customer_id,"WAITING",total_cost,description))
     
     conn.commit()
     order_id = cur.lastrowid #it will return the most recent id of the row that the cursor instance inserted
@@ -343,6 +345,8 @@ def placeorder(customer_id,total_cost):
     conn.commit()
     
     conn.close()
+    
+    return receipt_rows
 
 def search_restaurant(request):
     conn = sql.connect("digin.db")
@@ -404,6 +408,34 @@ def confirm_order(restaurant_id,order_id):
     cur.execute(sqlQuery, t)
     conn.commit()
     conn.close()    
+
+def decline_order(restaurant_id,order_id):
+    conn = sql.connect("digin.db")
+    t = ("DECLINED",int(order_id))
+    sqlQuery = "UPDATE 'order' SET status= ? WHERE id = ?"
+    cur = conn.cursor()
+    cur.execute(sqlQuery, t)
+    conn.commit()
+    conn.close()
+
+def review_order(order_review,order_id):
+    conn = sql.connect("digin.db")
+    t = (order_review,int(order_id))
+    sqlQuery = "UPDATE 'order' SET review= ? WHERE id = ?"
+    cur = conn.cursor()
+    cur.execute(sqlQuery, t)
+    conn.commit()
+    conn.close()
+
+def get_order_review(order_id):
+    conn = sql.connect("digin.db")
+    t = (order_id,)
+    sqlQuery = "select review from 'order' where id = ?"
+    cur = conn.cursor()
+    cur.execute(sqlQuery, t)
+    row = cur.fetchone()
+    conn.close()
+    return row
 
 def get_pending_orders(restaurant_id):
     conn = sql.connect("digin.db")

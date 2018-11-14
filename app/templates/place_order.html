@@ -29,49 +29,23 @@
 				});
 			});
 		</script>
-<script src="../static/js/jquery.carouFredSel-6.1.0-packed.js"></script>
-<script src="../static/js/tms-0.4.1.js"></script>
-<script>
- $(window).load(function(){
-      $('.slider')._TMS({
-              show:0,
-              pauseOnHover:false,
-              prevBu:'.prev',
-              nextBu:'.next',
-              playBu:false,
-              duration:800,
-              preset:'fade', 
-              pagination:true,//'.pagination',true,'<ul></ul>'
-              pagNums:false,
-              slideshow:8000,
-              numStatus:false,
-              banners:false,
-          waitBannerAnimation:false,
-        progressBar:false
-      })  
-      });
-      
-     $(window).load (
-    function(){$('.carousel1').carouFredSel({auto: false,prev: '.prev',next: '.next', width: 960, items: {
-      visible : {min: 1,
-       max: 4
-},
-height: 'auto',
- width: 240,
+<style>
+	.btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  width: 50%;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 17px;
+}
 
-    }, responsive: false, 
-    
-    scroll: 1, 
-    
-    mousewheel: false,
-    
-    swipe: {onMouse: false, onTouch: false}});
-    
-    
-    });      
-
-     </script>
-<script src="../static/js/jquery.easydropdown.js"></script>
+.btn:hover {
+  background-color: #45a049;
+}
+</style>
 
 </head>
 <body>
@@ -92,81 +66,131 @@ height: 'auto',
 			<div class="container">
 				<div class="top-menu">
 					<ul>
-						<li><a href="{{ url_for('index') }}">Home</a></li>|
-						<li><a href="{{ url_for('restaurants') }}">Popular Restaurants</a></li>|
-						<li class="active"><a href="{{ url_for('order') }}">Order</a></li>|
+						<li><a href="{{ url_for('index') }}">Home</a></li>
+						<li><a href="{{ url_for('restaurants') }}">Restaurants</a></li>
+						<li><a href="{{ url_for('vieworders') }}">View Orders</a></li>
 						<li><a href="{{ url_for('contact') }}">contact</a></li>
 						<div class="clearfix"></div>
 					</ul>
 				</div>
-
+				<div class="login-section">
+					<ul>
+						{% if logged_in %}
+							<li><a href="{{ url_for('logout') }}">Logout</a></li>
+						{% endif %}
+						<li><a href="#">Help</a></li>
+						<div class="clearfix"></div>
+					</ul>
+				</div>
 				<div class="clearfix"></div>
 			</div>
-		</div>
-		</div>
-	<!-- header-section-ends -->
-	<div class="order-section-page">
-		<div class="ordering-form">
-			<div class="container">
-			<div class="order-form-head text-center wow bounceInLeft" data-wow-delay="0.4s">
-						<h3>Your order has been placed</h3>
-						<p>Ordering Food Was Never So Simple !!!!!!</p>
-					</div>
-				<div class="col-md-6 order-form-grids">
-					
-					<div class="order-form-grid  wow fadeInLeft" data-wow-delay="0.4s">
-						<h5>Order Information</h5>
-								<span>Type of Order</span>
-								 <div class="dropdown-button">           			
-            			<select class="dropdown" tabindex="9" data-settings='{"wrapperClass":"flat"}'>
-            			<option value="0">Pick up</option>	
-						<option value="1">Delivery</option>
-						<option value="2">Catering</option>
-					  </select>
-					</div>
-		              <span>Restaurant Location</span>
-					   <div class="dropdown-button wow">           			
-            			<select class="dropdown" tabindex="9" data-settings='{"wrapperClass":"flat"}'>
-            			<option value="0">Restaurent A,144 East MG Road Indore</option>	
-						<option value="1">Restaurent B,64 Paarli Hills IndoreIndore</option>
-					  </select> 
-					</div>
-					<span>Location name</span>
-								 <div class="dropdown-button">           			
-            			<select class="dropdown" tabindex="9" data-settings='{"wrapperClass":"flat"}'>
-            			<option value="0"> Secunderabad</option>	
-						<option value="1">Location-1</option>
-						<option value="2">Location-2</option>
-					  </select>
-					</div>
-					<span>cuisine-name</span>
-					   <div class="dropdown-button">           			
-            			<select class="dropdown" tabindex="9" data-settings='{"wrapperClass":"flat"}'>
-            			<option value="0">cuisine-name</option>	
-						<option value="1">cuisine-name</option>
-						<option value="2">cuisine-name</option>
-					  </select> 
-					</div>
-					<input type="text" class="text" value="Time" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Time';}"><br>
-					<div class="wow swing animated" data-wow-delay= "0.4s">
-					<input type="button" value="order now">
-					</div>
-					</div>
+		</div>		
 				</div>
-				<div class="col-md-6 ordering-image wow bounceIn" data-wow-delay="0.4s">
-					<img src="../static/images/thankyou.jpg" class="img-responsive" alt="" />
+
+<div class="cart-items">
+	<div class="container">
+			
+			 <center><h1>Order Receipt</h1></center>
+			 <div class="cart-header">
+				{% set total = {'value': 0} %}
+				
+				 {% for item in items %}
+				 <div class="cart-sec simpleCart_shelfItem">
+						<div class="cart-item cyc">
+							 <img src={{url_for('static', filename=item[5])}} class="img-responsive" alt="">
+						</div>
+						
+					   <div class="cart-item-info">
+					 
+						<h3><a href="#" style="font-size:20px">{{item[4]}} </a><span style="font-size:20px"> Cost: {{item[3]}}</span></h3>
+						<ul class="qty">
+							<li><p style="font-size:20px">Quantity: {{item[2]}}</p></li>
+							<li><p style="font-size:18px">FREE delivery</p></li>
+						</ul>	
+					   </div>
+					   
+					   <div class="clearfix"></div>
+					   {% if total.update({"value": item[3]|int + total.value|int }) %} {% endif %}	
+				  </div>
+				  {% endfor %}
+				  <div style="text-align:right; font-size: 20px;">
+				   <a class="morebtn hvr-rectangle-in" href="#">Total: {{total.value}}</a><p><br></p>
+				  </div>
+				  </div> 
+			 </div>
+					
+		 </div>
+		 </div>
+<!-- checkout --> 
+	<div class="contact-section" id="contact">
+			<div class="container">
+				<div class="contact-section-grids">
+					<div class="col-md-3 contact-section-grid wow fadeInLeft" data-wow-delay="0.4s">
+						<h4>Site Links</h4>
+						<ul>
+							<li><i class="point"></i></li>
+							<li class="data"><a href="#">About Us</a></li>
+						</ul>
+						<ul>
+							<li><i class="point"></i></li>
+							<li class="data"><a href="#">Contact Us</a></li>
+						</ul>
+						<ul>
+							<li><i class="point"></i></li>
+							<li class="data"><a href="#">Privacy Policy</a></li>
+						</ul>
+						<ul>
+							<li><i class="point"></i></li>
+							<li class="data"><a href="#">Terms of Use</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3 contact-section-grid wow fadeInLeft" data-wow-delay="0.4s">
+						<h4>Site Links</h4>
+						<ul>
+							<li><i class="point"></i></li>
+							<li class="data"><a href="#">About Us</a></li>
+						</ul>
+						<ul>
+							<li><i class="point"></i></li>
+							<li class="data"><a href="#">Contact Us</a></li>
+						</ul>
+						<ul>
+							<li><i class="point"></i></li>
+							<li class="data"><a href="#">Privacy Policy</a></li>
+						</ul>
+						<ul>
+							<li><i class="point"></i></li>
+							<li class="data"><a href="#">Terms of Use</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3 contact-section-grid wow fadeInRight" data-wow-delay="0.4s">
+						<h4>Follow Us On...</h4>
+						<ul>
+							<li><i class="fb"></i></li>
+							<li class="data"> <a href="#">  Facebook</a></li>
+						</ul>
+						<ul>
+							<li><i class="tw"></i></li>
+							<li class="data"> <a href="#">Twitter</a></li>
+						</ul>
+						<ul>
+							<li><i class="in"></i></li>
+							<li class="data"><a href="#"> Linkedin</a></li>
+						</ul>
+						<ul>
+							<li><i class="gp"></i></li>
+							<li class="data"><a href="#">Google Plus</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3 contact-section-grid nth-grid wow fadeInRight" data-wow-delay="0.4s">
+						<h4>Subscribe Newsletter</h4>
+						<p>To get latest updates and food deals every week</p>
+						<input type="text" class="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">
+						<input type="submit" value="submit">
+						</div>
+					<div class="clearfix"></div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- footer-section-starts -->
-	<!-- <div class="footer">
-		<div class="container">
-			<p class="wow fadeInLeft" data-wow-delay="0.4s">&copy; 2014  All rights  Reserved | Template by &nbsp;<a href="http://w3layouts.com" target="target_blank">W3Layouts</a></p>
-		</div>
-	</div> -->
-	<!-- footer-section-ends -->
-
-
 </body>
 </html>

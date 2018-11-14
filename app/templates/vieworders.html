@@ -91,6 +91,38 @@
                 {%endif%}
                 {% endfor %}
                 <h4>Total Cost : ₹​ {{row[5]}}</h4>
+				<h4>Order Status : {{row[3]}}</h4>
+
+
+				<div class="account_grid">
+				   <!--add to menu section-->
+					<div class="col-md-6 login-right wow fadeInRight" data-wow-delay="0.4s">
+			  	       <form action="/review_order" method="post">
+				 	<div class="register-top-grid">
+					 <div class="wow fadeInLeft" data-wow-delay="0.4s">
+						 <input type="hidden" name="order_id" value={{row[0]}}
+
+						<span>Write Your Review</span>
+						 <textarea name="order_review" style="border:solid 5px green;" placeholder="Provide a review of your order" cols="90" rows="5"></textarea>
+					 </div>
+
+					 <div class="clearfix"> </div>
+					   <a class="news-letter" href="#">
+						 <!-- <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i>Sign Up for Newsletter</label> -->
+					   </a>
+					 </div>
+
+					 <div class="clearfix"> </div>
+						<!-- <div class="register-but">-->
+						   <input type="submit" value="submit">
+						   <div class="clearfix"> </div>
+			    	 </form>
+			   	</div>
+
+				   <div class="clearfix"> </div>
+			</div>
+
+
 			</li>
 			<li class="item-lists">
 				<div class="special-info grid_1 simpleCart_shelfItem">
