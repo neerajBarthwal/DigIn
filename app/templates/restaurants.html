@@ -29,7 +29,7 @@
 				});
 			});
 		</script>		
-<script src="../static/js/simpleCart.min.js"> </script>	
+
 </head>
 <body>
     <!-- header-section-starts -->
@@ -46,10 +46,10 @@
 						{%if logged_in %}
 						<h4>{{message}}<h4>
 						<div class="cart box_1">
-							<a href="{{ url_for('checkout') }}">
-								<h3> <span class="simpleCart_total"> $0.00 </span> (<span id="simpleCart_quantity" class="simpleCart_quantity"> 0 </span> items)<img src="../static/images/bag.png" alt=""></h3>
+							<a href="{{ url_for('view_cart') }}">
+								<h3><img src="../static/images/bag.png" alt=""></h3>
 							</a>	
-							<p><a href="javascript:;" class="simpleCart_empty">Empty card</a></p>
+							
 							<div class="clearfix"> </div>
 						</div>
 						{%endif%}
@@ -62,17 +62,24 @@
 				<div class="top-menu">
 					<ul>
 						<li><a href="{{ url_for('index') }}">Home</a></li>|
-						<li class="active"><a href="{{ url_for('restaurants') }}">Popular Restaurants</a></li>|
-						<li><a href="{{ url_for('order') }}">Order</a></li>|
+						<li class="active"><a href="{{ url_for('restaurants') }}">Restaurants</a></li>|
+						{% if logged_in %}
+						<li><a href="{{ url_for('vieworders') }}">View Orders</a></li>|
+						{% endif %}
 						<li><a href="{{ url_for('contact') }}">contact</a></li>
 						<div class="clearfix"></div>
 					</ul>
 				</div>
 				<div class="login-section">
 					<ul>
-						<li><a href="{{ url_for('login') }}">Login</a>  </li> |
-						<li><a href="{{ url_for('register') }}">Register</a> </li> |
+						{% if not logged_in %}
+						<li><a href="{{ url_for('login') }}">Login</a>  </li>
+						<li><a href="{{ url_for('register') }}">Register</a> </li>
+						{% endif %}
 						<li><a href="#">Help</a></li>
+						{% if logged_in %}
+						<li><a href="{{ url_for('logout') }}">Logout</a>  </li>
+						{% endif %}
 						<div class="clearfix"></div>
 					</ul>
 				</div>
@@ -182,30 +189,6 @@
 				</div>
 			</div>
 		</div>
-	<!-- content-section-ends -->
-	<!-- footer-section-starts -->
-	<!-- <div class="footer">
-		<div class="container">
-			<p class="wow fadeInLeft" data-wow-delay="0.4s">&copy; 2014  All rights  Reserved | Template by &nbsp;<a href="http://w3layouts.com" target="target_blank">W3Layouts</a></p>
-		</div>
-	</div> -->
-	<!-- footer-section-ends -->
-	  <script type="text/javascript">
-						$(document).ready(function() {
-							/*
-							var defaults = {
-					  			containerID: 'toTop', // fading element id
-								containerHoverID: 'toTopHover', // fading element hover id
-								scrollSpeed: 1200,
-								easingType: 'linear' 
-					 		};
-							*/
-							
-							$().UItoTop({ easingType: 'easeOutQuart' });
-							
-						});
-					</script>
-				<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Food_Template Bootstrap Responsive Website Template | login page :: w3layouts</title>
+<title>DigIn-Food at first sight</title>
 <link href="../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="../static/js/jquery.min.js"></script>
@@ -29,7 +29,6 @@
 				});
 			});
 		</script>
-<script src="../static/js/simpleCart.min.js"> </script>	
 </head>
 <body>
     <!-- header-section-starts -->
@@ -42,7 +41,7 @@
 				<div class="queries">
 					<p>Questions? Call us Toll-free!<span>1800-0000-7777 </span><label>(11AM to 11PM)</label></p>
 				</div>
-				<div class="header-right">
+<!-- 				<div class="header-right">
 						<div class="cart box_1">
 							<a href="checkout.html">
 								<h3> <span class="simpleCart_total"> $0.00 </span> (<span id="simpleCart_quantity" class="simpleCart_quantity"> 0 </span> items)<img src="images/bag.png" alt=""></h3>
@@ -51,24 +50,22 @@
 							<div class="clearfix"> </div>
 						</div>
 					</div>
-				<div class="clearfix"></div>
+				<div class="clearfix"></div> -->
 			</div>
 		</div>
 			<div class="menu-bar">
 			<div class="container">
 				<div class="top-menu">
 					<ul>
-						<li><a href="index.html">Home</a></li>|
-						<li><a href="restaurants.html">Popular Restaurants</a></li>|
-						<li><a href="order.html">Order</a></li>|
-						<li><a href="contact.html">contact</a></li>
+						<li><a href="{{ url_for('index') }}">Home</a></li>
+						<li><a href="{{ url_for('restaurants') }}">Restaurants</a></li>
+						<li><a href="{{ url_for('contact') }}">contact</a></li>
 						<div class="clearfix"></div>
 					</ul>
 				</div>
 				<div class="login-section">
 					<ul>
-						<li><a href="{{ url_for('login') }}">Login</a>  </li> |
-						<li><a href="{{ url_for('register') }}">Register</a> </li> |
+						<li><a href="{{ url_for('register') }}">Register</a> </li>
 						<li><a href="#">Help</a></li>
 						<div class="clearfix"></div>
 					</ul>
@@ -92,9 +89,7 @@
                        Login
                     </li>
                 </ul>
-                <ul class="previous">
-                	<li><a href="index.html">Back to Previous Page</a></li>
-                </ul>
+               
                 <div class="clearfix"></div>
 			   </div>
 			   <div class="account_grid">
@@ -276,6 +271,7 @@
 						</ul>
 						<ul>
 							<li><i class="point"></i></li>
+				
 							<li class="data"><a href="#">Terms of Use</a></li>
 						</ul>
 					</div>
@@ -309,30 +305,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- content-section-ends -->
-	<!-- footer-section-starts -->
-	<div class="footer">
-		<div class="container">
-			<p class="wow fadeInLeft" data-wow-delay="0.4s">&copy; 2014  All rights  Reserved | Template by &nbsp;<a href="http://w3layouts.com" target="target_blank">W3Layouts</a></p>
-		</div>
-	</div>
-	<!-- footer-section-ends -->
-	  <script type="text/javascript">
-						$(document).ready(function() {
-							/*
-							var defaults = {
-					  			containerID: 'toTop', // fading element id
-								containerHoverID: 'toTopHover', // fading element hover id
-								scrollSpeed: 1200,
-								easingType: 'linear' 
-					 		};
-							*/
-							
-							$().UItoTop({ easingType: 'easeOutQuart' });
-							
-						});
-					</script>
-				<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
 
 </body>
 </html>

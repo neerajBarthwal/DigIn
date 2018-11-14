@@ -29,7 +29,7 @@
 				});
 			});
 		</script>
-<script src="js/simpleCart.min.js"> </script>	
+
 </head>
 <body>
     <!-- header-section-starts -->
@@ -42,33 +42,23 @@
 				<div class="queries">
 					<p>Questions? Call us Toll-free!<span>1800-0000-7777 </span><label>(11AM to 11PM)</label></p>
 				</div>
-				<div class="header-right">
-						<!-- <div class="cart box_1">
-							<a href="checkout.html">
-								<h3> <span class="simpleCart_total"> $0.00 </span> (<span id="simpleCart_quantity" class="simpleCart_quantity"> 0 </span> items)<img src="images/bag.png" alt=""></h3>
-							</a>	
-							<p><a href="javascript:;" class="simpleCart_empty">Empty card</a></p>
-							<div class="clearfix"> </div>
-						</div> -->
-					</div>
-				<div class="clearfix"></div>
+
 			</div>
 		</div>
 			<div class="menu-bar">
 			<div class="container">
 				<div class="top-menu">
 					<ul>
-						<li><a href="{{ url_for('index') }}">Home</a></li>|
-						<li><a href="{{ url_for('restaurants') }}">Popular Restaurants</a></li>|
-						<li><a href="{{ url_for('order') }}">Order</a></li>|
+						<li><a href="{{ url_for('index') }}">Home</a></li>
+						<li><a href="{{ url_for('restaurants') }}">Restaurants</a></li>
 						<li><a href="{{ url_for('contact') }}">contact</a></li>
 						<div class="clearfix"></div>
 					</ul>
 				</div>
 				<div class="login-section">
 					<ul>
-						<li><a href="{{ url_for('login') }}">Login</a>  </li> |
-						<li><a class="active" href="#">Register</a> </li> |
+						<li><a href="{{ url_for('login') }}">Login</a>  </li>
+						
 						<li><a href="#">Help</a></li>
 						<div class="clearfix"></div>
 					</ul>
@@ -166,9 +156,10 @@
 
 					 <div class="clearfix"> </div>
 					   <a class="news-letter" href="#">
-						 <!-- <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i>Sign Up for Newsletter</label> -->
+						 
 					   </a>
 					 </div>
+					<br/><br/><br/>
 				     <div class="register-bottom-grid">
 						    <h3>LOGIN INFORMATION</h3>
 							 <div class="wow fadeInLeft" data-wow-delay="0.4s">
@@ -181,8 +172,8 @@
 							 </div>
 					 </div>
 					 <div class="clearfix"> </div>
-						<!-- <div class="register-but">
- -->							   <input type="submit" value="submit">
+				
+ 				   <input type="submit" value="submit">
 							   <div class="clearfix"> </div>
 			     </form>
 			   </div>
@@ -195,107 +186,7 @@
 
 	     </div>
 	    </div>
-<div class="special-offers-section">
-			<div class="container">
-				<div class="special-offers-section-head text-center dotted-line">
-					<h4>Special Offers</h4>
-				</div>
-				<div class="special-offers-section-grids">
-				 <div class="m_3"><span class="middle-dotted-line"> </span> </div>
-				   <div class="container">
-					  <ul id="flexiselDemo3">
-						<li>
-							<div class="offer">
-								<div class="offer-image">	
-									<img src="../static/images/p1.jpg" class="img-responsive" alt=""/>
-								</div>
-								<div class="offer-text">
-									<h4>Olister Combo pack lorem</h4>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
-									<input type="button" value="Grab It">
-									<span></span>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</li>
-						<li>
-							<div class="offer">
-								<div class="offer-image">	
-									<img src="../static/images/p2.jpg" class="img-responsive" alt=""/>
-								</div>
-								<div class="offer-text">
-									<h4>Chicken Jumbo pack lorem</h4>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
-									<input type="button" value="Grab It">
-									<span></span>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</li>
-						<li>
-							<div class="offer">
-								<div class="offer-image">	
-									<img src="../static/images/p1.jpg" class="img-responsive" alt=""/>
-								</div>
-								<div class="offer-text">
-									<h4>Crab Combo pack lorem</h4>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
-									<input type="button" value="Grab It">
-									<span></span>
-								</div>
-								
-								<div class="clearfix"></div>
-								</div>
-						</li>
-						<li>
-							<div class="offer">
-								<div class="offer-image">	
-									<img src="../static/images/p2.jpg" class="img-responsive" alt=""/>
-								</div>
-								<div class="offer-text">
-									<h4>Chicken Jumbo pack lorem</h4>
-									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
-									<input type="button" value="Grab It">
-									<span></span>
-								</div>
-								
-								<div class="clearfix"></div>
-								</div>
-					    </li>
-					 </ul>
-				 <script type="text/javascript">
-					$(window).load(function() {
-						
-						$("#flexiselDemo3").flexisel({
-							visibleItems: 3,
-							animationSpeed: 1000,
-							autoPlay: true,
-							autoPlaySpeed: 3000,    		
-							pauseOnHover: true,
-							enableResponsiveBreakpoints: true,
-							responsiveBreakpoints: { 
-								portrait: { 
-									changePoint:480,
-									visibleItems: 1
-								}, 
-								landscape: { 
-									changePoint:640,
-									visibleItems: 2
-								},
-								tablet: { 
-									changePoint:768,
-									visibleItems: 3
-								}
-							}
-						});
-						
-					});
-				    </script>
-				    <script type="text/javascript" src="../static/js/jquery.flexisel.js"></script>
-				</div>
-			</div>
-		</div>
-		</div>
+	
 <div class="clearfix"></div>
 		<div class="contact-section" id="contact">
 			<div class="container">
@@ -368,30 +259,5 @@
 			</div>
 		</div>
 	</div>
-	<!-- content-section-ends -->
-	<!-- footer-section-starts -->
-	<!-- <div class="footer"> 
-		<div class="container">
-			<p class="wow fadeInLeft" data-wow-delay="0.4s">&copy; 2014  All rights  Reserved | Template by &nbsp;<a href="http://w3layouts.com" target="target_blank">W3Layouts</a></p>
-		</div>
-	</div> -->
-	<!-- footer-section-ends -->
-	  <script type="text/javascript">
-						$(document).ready(function() {
-							/*
-							var defaults = {
-					  			containerID: 'toTop', // fading element id
-								containerHoverID: 'toTopHover', // fading element hover id
-								scrollSpeed: 1200,
-								easingType: 'linear' 
-					 		};
-							*/
-							
-							$().UItoTop({ easingType: 'easeOutQuart' });
-							
-						});
-					</script>
-				<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
-
 </body>
 </html>

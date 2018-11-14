@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Food_Template Bootstrap Responsive Website Template | Contact :: w3layouts</title>
+<title>DigIn-Food at first sight</title>
 <link href="../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="../static/js/jquery.min.js"></script>
@@ -29,7 +29,7 @@
 				});
 			});
 		</script>
-<script src="../static/js/simpleCart.min.js"> </script>
+
 </head>
 <body>
     <!-- header-section-starts -->
@@ -43,13 +43,14 @@
 					<p>Questions? Call us Toll-free!<span>1800-0000-7777 </span><label>(11AM to 11PM)</label></p>
 				</div>
 				<div class="header-right">
+						{% if logged_in %}
 						<div class="cart box_1">
-							<a href="{{ url_for('checkout') }}">
-								<h3> <span class="simpleCart_total"> $0.00 </span> (<span id="simpleCart_quantity" class="simpleCart_quantity"> 0 </span> items)<img src="../static/images/bag.png" alt=""></h3>
+							<a href="{{ url_for('view_cart') }}">
+								<h3><img src="../static/images/bag.png" alt=""></h3>
 							</a>	
-							<p><a href="javascript:;" class="simpleCart_empty">Empty card</a></p>
 							<div class="clearfix"> </div>
 						</div>
+						{% endif %}
 					</div>
 				<div class="clearfix"></div>
 			</div>
@@ -58,18 +59,25 @@
 			<div class="container">
 				<div class="top-menu">
 					<ul>
-						<li><a href="{{ url_for('index') }}">Home</a></li>|
-						<li><a href="{{ url_for('restaurants') }}">Popular Restaurants</a></li>|
-						<li><a href="{{ url_for('order') }}">Order</a></li>|
+						<li><a href="{{ url_for('index') }}">Home</a></li>
+						<li><a href="{{ url_for('restaurants') }}">Restaurants</a></li>
+						{% if logged_in %}
+						<li><a href="{{ url_for('vieworders') }}">View Orders</a></li>
+						{% endif %}
 						<li class="active"><a href="#contact" class="scroll">contact</a></li>
 						<div class="clearfix"></div>
 					</ul>
 				</div>
 				<div class="login-section">
 					<ul>
-						<li><a href="{{ url_for('login') }}">Login</a>  </li> |
-						<li><a href="{{ url_for('register') }}">Register</a> </li> |
+						{% if not logged_in %}
+						<li><a href="{{ url_for('login') }}">Login</a>  </li>
+						<li><a href="{{ url_for('register') }}">Register</a> </li>
+						{% endif %}
 						<li><a href="#">Help</a></li>
+						{% if logged_in %}
+							<li><a href="{{ url_for('logout') }}">Logout</a> </li>
+						{% endif %}
 						<div class="clearfix"></div>
 					</ul>
 				</div>
@@ -88,7 +96,6 @@
 			 		<div class="container">
 			 			<div class="col-md-6 contact_left wow fadeInRight" data-wow-delay="0.4s">
 			 				<h4>Contact Form</h4>
-			 				<p>Lorem ipsum dolor sit amet, adipiscing elit. Donec tincidunt dolor et tristique bibendum. Aenean sollicitudin vitae dolor ut posuere.</p>
 							  <form>
 								 <div class="form_details">
 					                 <input type="text" class="text" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}">
@@ -104,19 +111,19 @@
 					        </div>
 					        <div class="col-md-6 company-right wow fadeInLeft" data-wow-delay="0.4s">
 					        	<div class="contact-map">
-			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1578265.0941403757!2d-98.9828708842255!3d39.41170802696131!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54eab584e432360b%3A0x1c3bb99243deb742!2sUnited+States!5e0!3m2!1sen!2sin!4v1407515822047"> </iframe>
+		<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15225.246616663277!2d78.33955501821131!3d17.444791308705906!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb93a2eb620af7%3A0x943fcc66d90e2d8e!2sIIIT%2C+Gachibowli%2C+Hyderabad%2C+Telangana+500032!5e0!3m2!1sen!2sin!4v1542191893473" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
 		</div>
       
 	  <div class="company-right">
 					        	<div class="company_ad">
 							     		<h3>Contact Info</h3>
-							     		<span>Lorem ipsum dolor sit amet, consectetur adipiscing elit velit justo.</span>
+							     		
 			      						<address>
-											 <p>email:<a href="mailto:info@example.com">info@display.com</a></p>
-											 <p>phone:  +255 55 55 777</p>
-									   		<p>28-7-169, 2nd Ave South</p>
-									   		<p>Saskabush, SK   S7M 1T6</p>
-									 	 	
+											 <p>email:<a href="mailto:info@example.com">digin@gmail.com</a></p>
+											 <p>phone:  1870 555 555</p>
+									   		<p>International Institute of Information Technology</p>
+									   		<p>Gachibowli, Hyderabad, India	</p>
+									 	 	<p>500032</p>
 							   			</address>
 							   		</div>
 									</div>	
@@ -133,29 +140,6 @@
 					</div>
 
 	</div>
-	<!-- footer-section-starts -->
-	<!-- <div class="footer">
-		<div class="container">
-			<p class="wow fadeInLeft" data-wow-delay="0.4s">&copy; 2014  All rights  Reserved | Template by &nbsp;<a href="http://w3layouts.com" target="target_blank">W3Layouts</a></p>
-		</div>
-	</div> -->
-	<!-- footer-section-ends -->
-	  <script type="text/javascript">
-						$(document).ready(function() {
-							/*
-							var defaults = {
-					  			containerID: 'toTop', // fading element id
-								containerHoverID: 'toTopHover', // fading element hover id
-								scrollSpeed: 1200,
-								easingType: 'linear' 
-					 		};
-							*/
-							
-							$().UItoTop({ easingType: 'easeOutQuart' });
-							
-						});
-					</script>
-				<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
 
 </body>
 </html>

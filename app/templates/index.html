@@ -62,10 +62,9 @@
 						{%if logged_in %}
 						<h4>{{message}}<h4>
 						<div class="cart box_1">
-							<a href="checkout.html">
-								<h3> <span class="simpleCart_total"> Rs. 0.00 </span> (<span id="simpleCart_quantity" class="simpleCart_quantity"> 0 </span> items)<img src="../static/images/bag.png" alt=""></h3>
+							<a href="{{ url_for('view_cart') }}">
+								<h3><img src="../static/images/bag.png" alt=""></h3>
 							</a>	
-							<p><a href="javascript:;" class="simpleCart_empty">Empty card</a></p>
 							<div class="clearfix"> </div>
 							{%endif%}
 						</div>
@@ -78,21 +77,26 @@
 				<div class="top-menu">
 					<ul>
 						<li class="active"><a href="#Home" class="scroll">Home</a></li>
-						<li><a href="{{ url_for('restaurants') }}">Popular Restaurants</a></li>
-						<li><a href="{{ url_for('order') }}">Order</a></li>
-						<li><a href="{{ url_for('contact') }}">contact</a></li>
+						<li><a href="{{ url_for('restaurants') }}">Restaurants</a></li>
 						{%if logged_in %}
-						<li><a href="{{ url_for('contact') }}">View Orders</a></li>
+						<li><a href="{{ url_for('vieworders') }}">View Orders</a></li>
 						{%endif%}
-						<div class="clearfix"></div>
+						<li><a href="{{ url_for('contact') }}">contact</a></li>
+						
 					</ul>
 				</div>
 				<div class="login-section">
 					<ul>
+					{%if not logged_in %}
 						<li><a href="{{ url_for('login') }}">Login</a>  </li> 
 						<li><a href="{{ url_for('register') }}">Register</a> </li>
+						
+					{%endif%}
+					{%if logged_in %}
 						<li><a href="#">Help</a></li>
-						<div class="clearfix"></div>
+						<li><a href="{{ url_for('logout') }}">Logout</a></li>
+					{%endif%}
+						
 					</ul>
 				</div>
 				<div class="clearfix"></div>
@@ -195,7 +199,7 @@
 									<h4>{{row[1]}}</h4>
 									<p>{{row[4]}}</p>
 									<h4>Rating: {{row[5]}}</h4>
-									<input type="button" value="Grab It">
+									<input type="button" value="Dig In" onclick="document.location.href='{{url_for('menu', restaurant_id=row[0] )}}';" >
 									<span></span>
 								</div>
 								<div class="clearfix"></div>
@@ -448,30 +452,5 @@
 			</div>
 		</div>
 	</div>
-	<!-- content-section-ends -->
-	<!-- footer-section-starts -->
-	<!-- <div class="footer">
-		<div class="container">
-			<p class="wow fadeInLeft" data-wow-delay="0.4s">&copy; 2014  All rights  Reserved | Template by &nbsp;<a href="http://w3layouts.com" target="target_blank">W3Layouts</a></p>
-		</div>
-	</div> -->
-	<!-- footer-section-ends -->
-	  <script type="text/javascript">
-						$(document).ready(function() {
-							/*
-							var defaults = {
-					  			containerID: 'toTop', // fading element id
-								containerHoverID: 'toTopHover', // fading element hover id
-								scrollSpeed: 1200,
-								easingType: 'linear' 
-					 		};
-							*/
-							
-							$().UItoTop({ easingType: 'easeOutQuart' });
-							
-						});
-					</script>
-				<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
-
 </body>
 </html>

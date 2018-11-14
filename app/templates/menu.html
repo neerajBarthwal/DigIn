@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Food_Template Bootstrap Responsive Website Template | Checkout :: w3layouts</title>
+<title>DigIn-Food at first sight</title>
 <link href="../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="../static/js/jquery.min.js"></script>
@@ -42,15 +42,17 @@
 				<div class="queries">
 					<p>Questions? Call us Toll-free!<span>1800-0000-7777 </span><label>(11AM to 11PM)</label></p>
 				</div>
+				{% if logged_in %}
 				<div class="header-right">
 						<div class="cart box_1">
 							<a href="{{ url_for('view_cart') }}">
-								<h3> <span class="simpleCart_total"> $0.00 </span> (<span id="simpleCart_quantity" class="simpleCart_quantity"> 0 </span> items)<img src="../static/images/bag.png" alt=""></h3>
+								<h3><img src="../static/images/bag.png" alt=""></h3>
 							</a>	
-							<p><a href="javascript:;" class="simpleCart_empty">Empty card</a></p>
+							
 							<div class="clearfix"> </div>
 						</div>
 					</div>
+					{% endif %}
 				<div class="clearfix"></div>
 			</div>
 		</div>
@@ -58,24 +60,29 @@
 			<div class="container">
 				<div class="top-menu">
 					<ul>
-						<li><a href="{{ url_for('index') }}>Home</a></li>|
-						<li class="active"><a href="{{ url_for('restaurants') }}">Popular Restaurants</a></li>|
-						<li><a href="{{ url_for('order') }}">Order</a></li>|
+						<li><a href="{{ url_for('index') }}">Home </a></li>
+						<li class="active"><a href="{{ url_for('restaurants') }}">Restaurants</a></li>
+						{% if logged_in %}
+						<li><a href="{{ url_for('vieworders') }}">View Order</a></li>
+						{% endif %}
 						<li><a href="{{ url_for('contact') }}">contact</a></li>
 						<div class="clearfix"></div>
 					</ul>
 				</div>
 				<div class="login-section">
 					<ul>
-						<li><a href="{{ url_for('login') }}">Login</a>  </li> |
-						<li><a href="{{ url_for('register') }}">Register</a> </li> |
+						{% if not logged_in %}
+						<li><a href="{{ url_for('login') }}">Login</a>  </li>
+						<li><a href="{{ url_for('register') }}">Register</a> </li>
+						{% endif %}
 						<li><a href="#">Help</a></li>
+						{% if logged_in %}
+						<li><a href="{{ url_for('logout') }}">Logout</a>  </li>
+						{% endif %}
 						<div class="clearfix"></div>
 					</ul>
 				</div>
-	<!-- header-section-ends -->
-	<!-- content-section-starts -->
-	<!-- checkout -->
+
 				<div class="clearfix"></div>
 			</div>
 		</div>		
@@ -115,9 +122,6 @@
 				  </div>
 			 </div>
 			 {% endfor %}
-			 
-			 
-			 
 		 </div>
 		 </div>
 <!-- checkout -->
@@ -191,26 +195,5 @@
 				</div>
 			</div>
 		</div>
-	<!-- content-section-ends -->
-	<!-- footer-section-starts -->
-	
-	<!-- footer-section-ends -->
-	  <script type="text/javascript">
-						$(document).ready(function() {
-							/*
-							var defaults = {
-					  			containerID: 'toTop', // fading element id
-								containerHoverID: 'toTopHover', // fading element hover id
-								scrollSpeed: 1200,
-								easingType: 'linear' 
-					 		};
-							*/
-							
-							$().UItoTop({ easingType: 'easeOutQuart' });
-							
-						});
-					</script>
-				<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
-
 </body>
 </html>

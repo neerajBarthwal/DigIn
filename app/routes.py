@@ -12,20 +12,42 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 @app.route('/')
 def welcome():
     rest = dbHandler.get_all_restaurant()
+    if 'username' in session:
+        return render_template('index.html',restaurants=rest, logged_in=True)
     return render_template('index.html',restaurants=rest)
 
 @app.route('/order', methods=['GET', 'POST'])
 def order():
-    return render_template('order.html')
+    if 'username' in session:
+        return render_template('order.html',logged_in=True)
+    else:
+        return render_template('order.html')
 
 @app.route('/restaurants', methods=['GET', 'POST'])
 def restaurants():
-    rest_list = dbHandler.get_all_restaurant()
-    return render_template('restaurants.html',restaurants=rest_list)
+    if 'username' in session:
+        rest_list = dbHandler.get_all_restaurant()
+        return render_template('restaurants.html',restaurants=rest_list,logged_in = True)
+    else:
+        rest_list = dbHandler.get_all_restaurant()
+        return render_template('restaurants.html',restaurants=rest_list)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    return render_template('contact.html')
+    if 'username' in session:
+        return render_template('contact.html',logged_in=True)
+    else:
+        return render_template('contact.html')
+
+@app.route('/search_restaurant', methods=['GET', 'POST'])
+def search_restaurant():
+    if(request.method=='POST'):
+        if 'username' in session:
+            rest = dbHandler.search_restaurant(request)
+            return render_template('restaurants.html',restaurants=rest,logged_in = True)
+        else:
+            rest = dbHandler.search_restaurant(request)
+            return render_template('restaurants.html',restaurants=rest)  
 
 @app.route('/orderslist', methods=['GET', 'POST'])
 def orderslist():
@@ -33,9 +55,14 @@ def orderslist():
 
 @app.route('/menu', methods=['GET', 'POST'])
 def menu():
+    if 'username' in session:
+        logged_in = True
+    else:
+        logged_in = False
+    
     restaurant_id = request.args.get('restaurant_id')
     menu = dbHandler.get_menu(restaurant_id)
-    return render_template('menu.html',menu=menu)
+    return render_template('menu.html',menu=menu,logged_in=logged_in)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -49,7 +76,11 @@ def register():
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    rest = dbHandler.get_all_restaurant()
+    if 'username' in session:
+        return render_template('index.html', restaurants=rest, logged_in=True)
+    else:
+        return render_template('index.html', restaurants=rest)
 
 @app.route('/checkout',methods=['GET','POST'])
 def checkout():
@@ -127,21 +158,13 @@ def restaurant_login():
             return render_template("login.html",message="Invalid credentials")
     return render_template("restaurant_main.html",logged_in=True,message=msg)
 
-@app.route('/search_restaurant', methods=['GET', 'POST'])
-def search_restaurant():
-    if(request.method=='POST'):
-        rest = dbHandler.search_restaurant(request)
-        if not rest:
-            return render_template('restaurants.html',err_message="Oops!! No results match your query. Try again with a different name.")
-        return render_template('restaurants.html',restaurants=rest)
-
 
 @app.route('/logout')
 def logout():
     # remove the username from the session if it is there
     session.pop('username', None)
     session.pop('id',None)
-    return render_template('index.html')
+    return redirect(url_for('index'))
 
 
 def get_menu_of_restaurant(restaurant_id):
@@ -199,7 +222,7 @@ def view_cart():
         customer = dbHandler.get_customer_from_username(session['username'])
         rows=dbHandler.view_cart(customer[0])
 
-        return render_template('view_cart.html', items=rows)
+        return render_template('view_cart.html', items=rows, logged_in = True)
     else:
         return render_template('login.html')
 
