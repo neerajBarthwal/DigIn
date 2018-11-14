@@ -404,3 +404,26 @@ def confirm_order(restaurant_id,order_id):
     cur.execute(sqlQuery, t)
     conn.commit()
     conn.close()    
+
+def get_pending_orders(restaurant_id):
+    conn = sql.connect("digin.db")
+    t = (restaurant_id,"WAITING")
+    sqlQuery = "select * from 'order' where restaurant_id = ? AND status = ?"
+    cur = conn.cursor()
+    cur.execute(sqlQuery, t)
+    row = cur.fetchall()
+    conn.close()
+    return row
+     
+def get_revenue(restaurant_id):
+    conn = sql.connect("digin.db")
+    t = (restaurant_id,"CONFIRMED")
+    sqlQuery = "select * from 'order' where restaurant_id = ? AND status = ?"
+    cur = conn.cursor()
+    cur.execute(sqlQuery, t)
+    rows = cur.fetchall()
+    revenue = 0
+    for row in rows:
+        revenue = revenue + row[5] 
+    conn.close()
+    return revenue

@@ -77,8 +77,8 @@
 				<div class="top-menu">
 					<ul>
 						<li><a href="{{ url_for('index') }}>Home</a></li>|
-						<li class="active"><a href="{{ url_for('restaurants') }}">Restaurants</a></li>|
-						<li><a href="{{ url_for('vieworders') }}">View Orders</a></li>|
+						<li class="active"><a href="{{ url_for('restaurants') }}">Restaurants</a></li>
+						<li><a href="{{ url_for('vieworders') }}">View Orders</a></li>
 						<li><a href="{{ url_for('contact') }}">contact</a></li>
 						<div class="clearfix"></div>
 					</ul>
@@ -99,7 +99,12 @@
 
 <div class="cart-items">
 	<div class="container">
-			 <h1>Current Order</h1>
+			{% if not cart_empty%}
+			 <h1>Cart</h1>
+			 {% endif %}
+			 {% if cart_empty%}
+			 	<h1>{{err_message}}</h1>
+			 {% endif %}
 			 <div class="cart-header">
 				{% set total = {'value': 0} %}
 				
@@ -144,8 +149,10 @@
 				  </div>
 				  {% endfor %}
 				  <div style="text-align:right; font-size: 20px;">
+				  {% if not cart_empty %}
 				  <a class="morebtn hvr-rectangle-in" href="#">Total: {{total.value}}</a><p><br></p>
 				  <a class="morebtn hvr-rectangle-in" href="{{ url_for('placeorder', total_cost=total.value) }}">Proceed to checkout</a>
+				  {% endif %}
 				  </div> 
 			 </div>
 					

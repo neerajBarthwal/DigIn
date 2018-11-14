@@ -221,6 +221,9 @@ def view_cart():
     if 'username' in session:
         customer = dbHandler.get_customer_from_username(session['username'])
         rows=dbHandler.view_cart(customer[0])
+        
+        if not rows:
+            return render_template('view_cart.html', items=rows, logged_in = True,cart_empty=True,err_message="Your cart is currently empty")
 
         return render_template('view_cart.html', items=rows, logged_in = True)
     else:
@@ -242,8 +245,8 @@ def delete_from_cart():
         customer_id = request.form['customer_id']
         product_id = request.form['product_id']
         dbHandler.delete_from_cart(customer_id, product_id)
-        rows=dbHandler.view_cart(customer_id)
-        return render_template('view_cart.html', items=rows)
+        #rows=dbHandler.view_cart(customer_id)
+        return redirect('view_cart')
     else:
         return render_template('login.html')
 
@@ -296,6 +299,25 @@ def confirm_order():
         #print("order id",request.form['order_id'])
         ordr = dbHandler.get_orders_for_restaurant(restaurant_id)
         return render_template('restaurant_view_orders.html', orders=ordr, logged_in=True)
+    else:
+        return render_template('index.html')
+    
+@app.route('/pending_orders', methods=['GET','POST'])
+def pending_orders():
+    if 'username' in session:
+        restaurant_id = session['id']
+        ordr = dbHandler.get_pending_orders(restaurant_id)
+        print(ordr)
+        return render_template('pending_orders.html', orders=ordr, logged_in=True)
+    else:
+        return render_template('index.html')
+
+@app.route('/revenue', methods=['GET','POST'])
+def get_revenue():
+    if 'username' in session:
+        restaurant_id = session['id']
+        revenue = dbHandler.get_revenue(restaurant_id)
+        return render_template('revenue.html', revenue=revenue, logged_in=True)
     else:
         return render_template('index.html')
 

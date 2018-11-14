@@ -14,7 +14,7 @@
 <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Lobster+Two:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
 <!--Animation-->
-<script src="../static/js/wow.min.js"></script>
+<script src="js/wow.min.js"></script>
 <link href="../static/css/animate.css" rel='stylesheet' type='text/css' />
 <script>
 	new WOW().init();
@@ -50,18 +50,18 @@
 			<div class="container">
 				<div class="top-menu">
 					<ul>
-						<li ><a href="{{ url_for('restaurant_login') }}">Home</a></li>
+						<li ><a href="{{url_for('restaurant_login')}}" >Home</a></li>
 						<li><a href="{{ url_for('add_product_to_menu') }}">Add To Menu</a></li>
 						<li><a href="{{ url_for('delete_product_from_menu') }}">Delete From Menu</a></li>
 						<li><a href="{{ url_for('view_orders_for_restaurant') }}">View All Orders</a></li>
-						<li ><a href="{{ url_for('pending_orders') }}">Pending Orders</a></li>
-                        <li  ><a href="{{ url_for('get_revenue') }}">Total Revenue</a></li>
-						<div class="clearfix"></div>
+                        <li ><a href="{{ url_for('pending_orders') }}">Pending Orders</a></li>
+                        <li class="active"><a href="{{ url_for('get_revenue') }}">Revenue</a></li>
+                        <div class="clearfix"></div>
 					</ul>
 				</div>
 				<div class="login-section">
 					<ul>
-						<li><a href="{{ url_for('logout') }}">Logout</a>  </li>
+						<li><a href="{{ url_for('logout') }}">Logout</a>  </li> 
 						<li><a href="#">Help</a></li>
 						<div class="clearfix"></div>
 					</ul>
@@ -74,60 +74,23 @@
 
 	<!-- header-section-ends -->
     <!-- content-section-starts -->
+    
 	<div class="orders">
 	<div class="container">
 		<div class="order-top">
-            <div class="container">
-                <h4>Customer Name: {{customer_details[1]}}</h4>
-                <h4>Customer Address: {{customer_details[2]}}</h4>
-                <h4>Customer Phone No: {{customer_details[3]}}</h4>
-            </div>
-            <li class="item-lists"><h4>Food Items</h4>
-
-                {% for rows in order_product_details %}
-                <p style="font-size:18px;font-weight: bold">{{rows[4]}}</p>
-
-
-
-                {% endfor %}
-                    {% if order_status== "WAITING" %}
-                     <form id="confirm" action="/confirm_order" method="post">
-						<ul class="qty">
-                            <input type="hidden" name="order_id" value={{order_product_details[0][0]}} />
-
-							<li><a class="morebtn hvr-rectangle-in" href="#" onclick='document.getElementById("confirm").submit();'>Confirm Order</a></li>
-						</ul>
-                    </form>
-
-                    {%elif order_status=="CONFIRMED"%}
-                          <ul class="qty">
-                            <li><a class="morebtn hvr-rectangle-in" href="#" >Order Confirmed</a></li>
-                          </ul>
-                    {% endif %}
+            <li class="item-lists"><h4>Total Revenue: {{revenue}}</h4>
 			</li>
-			<li class="item-lists">
-				<div class="special-info grid_1 simpleCart_shelfItem">
-                    <h4>Qty</h4>
-                    {% for rows in order_product_details %}
-						<!-- <div class="pr-left"> -->
-								<h4 style="font-size:18px;font-weight: bold">{{rows[2]}}</h4>
-							<!-- <div class="item_add"><span class="item_price"><h6>{{rows['quantity']}}</h6></span></div> -->
-						<!-- </div> -->
-						<!-- <div class="pr-right">
-							<div class="item_add"><span class="item_price"><a href="#">Pick</a></span></div>
-						</div> -->
-                            <div class="clearfix"></div>
-
-                            {% endfor %}
-					</div>
-					</div>
-				</li>
+            
 			<div class="clearfix"></div>
+
+            
+
+
 		</div>
 
 		</div>
+	</div>
 </div>
-
 	<div class="contact-section" id="contact">
 			<div class="container">
 				<div class="contact-section-grids">
@@ -198,5 +161,30 @@
 				</div>
 			</div>
 		</div>
+	<!-- content-section-ends -->
+	<!-- footer-section-starts -->
+	<div class="footer">
+		<div class="container">
+			<p class="wow fadeInLeft" data-wow-delay="0.4s">&copy; 2014  All rights  Reserved | Template by &nbsp;<a href="http://w3layouts.com" target="target_blank">W3Layouts</a></p>
+		</div>
+	</div>
+	<!-- footer-section-ends -->
+	  <script type="text/javascript">
+						$(document).ready(function() {
+							/*
+							var defaults = {
+					  			containerID: 'toTop', // fading element id
+								containerHoverID: 'toTopHover', // fading element hover id
+								scrollSpeed: 1200,
+								easingType: 'linear'
+					 		};
+							*/
+
+							$().UItoTop({ easingType: 'easeOutQuart' });
+
+						});
+					</script>
+				<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+
 </body>
 </html>
