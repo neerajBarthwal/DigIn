@@ -163,23 +163,19 @@ def add_product_to_menu(restaurant_id,request):
 
 def delete_product_from_menu(restaurant_id,request):
     con = sql.connect("digin.db")
-    t=(request.form['name'],restaurant_id)
-    sqlQuery = "select name from product where name = ? and restaurant_id= ?"
+    t=(request.form['product_id'],restaurant_id)
+    sqlQuery = "select name from product where id = ? and restaurant_id= ?"
     cur = con.cursor()
     cur.execute(sqlQuery,t)
     row = cur.fetchone()
 
-    if not row:
-        cur.execute(
-            "DELETE from product (name,description,price,type,picture,restaurant_id) VALUES (?,?,?,?,?,?)",
-            (
-                request.form['name'], request.form['description'],
-                request.form['price'], request.form['type'], "cuisine6.jpg", restaurant_id))
+    if row:
+        cur.execute("DELETE from product where id = ? and restaurant_id = ?",t)
         con.commit()
         print("product deleted from menu successfully")
 
     con.close()
-    return not row
+    return row
 
 # def delete_product_from_menu(restaurant_id,request):
 #     con = sql.connect("digin.db")
@@ -315,6 +311,7 @@ def get_order_products(customer_id):
     conn.close()
     return orders
 
+
 def placeorder(customer_id,total_cost):
     conn = sql.connect("digin.db")
     sqlQuery = "SELECT * from cart where customer_id = ?"
@@ -356,7 +353,54 @@ def search_restaurant(request):
     rows = cur.fetchall()
     conn.close()
     return rows
-    
-    
-    
-    
+
+def get_orders_for_restaurant(restaurant_id):
+    conn = sql.connect("digin.db")
+    t=(restaurant_id,)
+    sqlQuery = "select * from 'order' where restaurant_id = ?"
+    cur = conn.cursor()
+    cur.execute(sqlQuery,t)
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+def get_order_product_details(order_id):
+    conn = sql.connect("digin.db")
+    t = (order_id,)
+    #sqlQuery = "SELECT prod_order_mapping.quantity,product.name FROM prod_order_mapping INNER JOIN product ON prod_order_mapping.product_id =product.id where prod_order_mapping.order_id= ?"
+    sqlQuery = "SELECT * FROM prod_order_mapping INNER JOIN product ON prod_order_mapping.product_id =product.id where prod_order_mapping.order_id= ?"
+    cur = conn.cursor()
+    cur.execute(sqlQuery, t)
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+def get_customer_details(customer_id):
+    conn = sql.connect("digin.db")
+    t = (customer_id,)
+    sqlQuery = "select * from customer where id = ?"
+    cur = conn.cursor()
+    cur.execute(sqlQuery, t)
+    row = cur.fetchone()
+    conn.close()
+    return row
+
+def get_order_status(order_id):
+    conn = sql.connect("digin.db")
+    t = (order_id,)
+    sqlQuery = "select status from 'order' where id = ?"
+    cur = conn.cursor()
+    cur.execute(sqlQuery, t)
+    row = cur.fetchone()
+    conn.close()
+    return row
+
+
+def confirm_order(restaurant_id,order_id):
+    conn = sql.connect("digin.db")
+    t = ("CONFIRMED",int(order_id))
+    sqlQuery = "UPDATE 'order' SET status= ? WHERE id = ?"
+    cur = conn.cursor()
+    cur.execute(sqlQuery, t)
+    conn.commit()
+    conn.close()    

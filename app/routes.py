@@ -144,6 +144,9 @@ def logout():
     return render_template('index.html')
 
 
+def get_menu_of_restaurant(restaurant_id):
+    menu = dbHandler.get_menu(restaurant_id)
+    return menu
 
 @app.route('/add_product_to_menu', methods=['GET', 'POST'])
 def add_product_to_menu():
@@ -162,16 +165,19 @@ def add_product_to_menu():
 @app.route('/delete_product_from_menu', methods=['GET', 'POST'])
 def delete_product_from_menu():
     if (request.method == 'GET'):
-        if 'restaurant_name' in session:
-            return render_template("delete_from_menu.html", message="Welcome " + session['restaurant_name'] + "!")
+        if 'username' in session:
+            menu = get_menu_of_restaurant(session['id'])
+            return render_template("delete_from_menu.html", menu=menu)
         else:
             return render_template("login.html",message="")
     elif request.method == 'POST':
-        if dbHandler.add_product_to_menu(session['id'],request):
-            msg = "product successfully added"
+        if dbHandler.delete_product_from_menu(session['id'],request):
+            msg = "product successfully deleted"
         else:
-            msg = "could not add product"
-        return render_template('delete_from_menu.html', message=msg)
+            msg = "could not delete product"
+        menu = get_menu_of_restaurant(session['id'])
+        return render_template("delete_from_menu.html", menu=menu,message=msg)
+        #return render_template('delete_from_menu.html', message=msg)
 
 @app.route('/add_to_cart',methods=['POST'])
 def add_to_cart():
@@ -234,7 +240,41 @@ def placeorder(total_cost):
         customer_id = session['id']
         dbHandler.placeorder(customer_id,total_cost)
         return render_template('place_order.html')
+
+
+@app.route('/view_orders_for_restaurant', methods=['GET','POST'])
+def view_orders_for_restaurant():
+    if 'username' in session:
+        restaurant_id = session['id']
+        ordr = dbHandler.get_orders_for_restaurant(restaurant_id)
+        return render_template('restaurant_view_orders.html',orders=ordr,logged_in = True )
+    else:
+        return render_template('index.html')
+
+
+@app.route('/view_details_of_order', methods=['GET' , 'POST'])
+def view_details_of_order():
+    if 'username' in session:
         
+        order_status = dbHandler.get_order_status(request.form['order_id'])
+        order_product_details = dbHandler.get_order_product_details(request.form['order_id'])
+        customer_details=dbHandler.get_customer_details(request.form['c_id'])
+        #print(order_product_details)
+        #print(customer_details[1])
+        return render_template('view_order_details_by_restaurant.html',order_status=order_status[0],customer_details=customer_details,order_product_details=order_product_details,logged_in = True )
+    else:
+        return render_template('index.html')
+
+@app.route('/confirm_order', methods=['GET','POST'])
+def confirm_order():
+    if 'username' in session:
+        restaurant_id = session['id']
+        dbHandler.confirm_order(restaurant_id,request.form['order_id'])
+        #print("order id",request.form['order_id'])
+        ordr = dbHandler.get_orders_for_restaurant(restaurant_id)
+        return render_template('restaurant_view_orders.html', orders=ordr, logged_in=True)
+    else:
+        return render_template('index.html')
 
 
 if __name__ == "__main__":
