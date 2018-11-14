@@ -459,3 +459,30 @@ def get_revenue(restaurant_id):
         revenue = revenue + row[5] 
     conn.close()
     return revenue
+
+def modify_product(restaurant_id,request):
+    con = sql.connect("digin.db")
+    t=(request.form['description'],request.form['cost'], request.form['product_id'])
+    sqlQuery = "UPDATE product SET description= ?, price=? where id = ?"
+    cur = con.cursor()
+    cur.execute(sqlQuery,t)
+    con.commit()
+
+    con.close()
+    
+
+
+def upload_product_image(product_id, file_name):
+    con = sql.connect("digin.db")
+    sqlQuery = "UPDATE product SET picture= ? where id=?"
+    t=(file_name, product_id)
+    cur = con.cursor()
+    cur.execute(sqlQuery,t)
+    con.commit()
+
+    con.close()
+    
+    
+    
+    
+    

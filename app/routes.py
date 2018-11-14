@@ -5,9 +5,14 @@ from flask.templating import render_template
 import models as dbHandler
 from flask import session
 from flask import redirect
+from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
+photos = UploadSet('photos', IMAGES)
+app.config['UPLOADED_PHOTOS_DEST'] = 'static/images'
+configure_uploads(app, photos)
 
 @app.route('/')
 def welcome():
@@ -201,6 +206,20 @@ def delete_product_from_menu():
         menu = get_menu_of_restaurant(session['id'])
         return render_template("delete_from_menu.html", menu=menu,message=msg)
         #return render_template('delete_from_menu.html', message=msg)
+        
+@app.route('/modify_product', methods=['GET', 'POST'])
+def modify_product():
+    if (request.method == 'GET'):
+        if 'username' in session:
+            menu = get_menu_of_restaurant(session['id'])
+            return render_template("modify_product.html", menu=menu)
+        else:
+            return render_template("login.html",message="")
+    elif request.method == 'POST':
+        dbHandler.modify_product(session['id'],request)
+        msg = "product modified"
+        menu = get_menu_of_restaurant(session['id'])
+        return render_template("modify_product.html", menu=menu,message=msg)
 
 @app.route('/add_to_cart',methods=['POST'])
 def add_to_cart():
@@ -348,6 +367,14 @@ def get_revenue():
         return render_template('revenue.html', revenue=revenue, logged_in=True)
     else:
         return render_template('index.html')
+    
+@app.route('/product_image_upload', methods=['GET', 'POST'])
+def product_image_upload():
+    if request.method == 'POST' and 'photo' in request.files:
+        product_id = request.form['product_id']
+        filename = photos.save(request.files['photo'])
+        dbHandler.upload_product_image(product_id, "images/"+filename)
+        return redirect('modify_product')
 
 
 if __name__ == "__main__":
